@@ -1,0 +1,88 @@
+{
+  "appName": "ليفت لوج",
+  "welcomeBack": "حمدلله على السلامة،",
+  "todaySession": "تمرينة اليوم",
+  "continueWorkout": "استكمال التمرين",
+  "weeklyStreak": "التتابع\nالأسبوعي",
+  "currentWeight": "الوزن\nالحالي",
+  "recentActivity": "النشاط الأخير",
+  "daysCount": "{count} / 7 أيام",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kg": "كجم",
+  "keepGoing": "عاش يا بطل!",
+  "done": "تم",
+  "profile": "الحساب الشخصي",
+  "yourProgress": "تقدمك",
+  "trackGains": "تابع نتائجك",
+  "totalWorkouts": "إجمالي التمارين",
+  "totalVolume": "إجمالي الأحمال",
+  "days": "أيام",
+  "volumeProgression": "تطور الأحمال",
+  "addWorkoutsToSeeProgress": "أضف تمارين لمتابعة تقدمك",
+  "weightTracking": "متابعة الوزن",
+  "current": "الحالي",
+  "target": "المستهدف",
+  "toGoal": "متبقي {weight} {unit} للهدف",
+  "@toGoal": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "workout": "التمارين",
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "theme": "المظهر",
+  "logout": "تسجيل الخروج",
+  "personalRecords": "الأرقام القياسية",
+  "weightHistory": "سجل الوزن",
+  "workoutHistory": "سجل التمارين",
+  "noWorkoutsYet": "لا توجد تمارين بعد",
+  "startJourney": "ابدأ رحلتك الرياضية بإضافة تمرين!",
+  "activeSession": "جلسة نشطة",
+  "startedAt": "بدأت {time}",
+  "@startedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addExercise": "إضافة تمرين",
+  "finishWorkout": "إنهاء التمرين",
+  "set": "مجموعة",
+  "weight": "وزن",
+  "reps": "عدات",
+  "addSet": "إضافة مجموعة",
+  "morningWorkout": "تمرين صباحي",
+  "newExercise": "تمرين جديد",
+  "goalWeight": "الوزن المستهدف",
+  "darkMode": "الوضع الليلي",
+  "aboutApp": "عن التطبيق",
+  "streak": "التتابع",
+  "workoutsCount": "التمارين",
+  "loginWelcomeBack": "مرحباً بعودتك!",
+  "loginSubtitle": "قم بتسجيل الدخول إلى حسابك للمتابعة",
+  "email": "البريد الإلكتروني",
+  "password": "كلمة المرور",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "login": "تسجيل الدخول",
+  "orContinueWith": "أو المتابعة باستخدام",
+  "newToGrind": "جديد في ليفت لوج؟",
+  "createAccount": "إنشاء حساب",
+  "registerTitle": "إنشاء حساب",
+  "registerSubtitle": "ابدأ رحلتك اليوم",
+  "fullName": "الاسم بالكامل",
+  "signUp": "تسجيل جديد",
+  "alreadyHaveAccount": "لديك حساب بالفعل؟"
+}
