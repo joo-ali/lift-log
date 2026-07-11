@@ -37,6 +37,15 @@ class WorkoutModel extends HiveObject {
         'exercises': exercises.map((i) => i.toJson()).toList(),
       };
 
+  factory WorkoutModel.fromMap(Map<String, dynamic> map) => WorkoutModel(
+        id: map['id'] ?? '',
+        title: map['title'] ?? '',
+        date: map['date'] is String ? DateTime.parse(map['date']) : (map['date'] as dynamic).toDate(),
+        exercises: (map['exercises'] as List? ?? [])
+            .map((i) => ExerciseModel.fromJson(i))
+            .toList(),
+      );
+
   double get totalVolume {
     return exercises.fold(0, (sum, exercise) => sum + exercise.totalVolume);
   }

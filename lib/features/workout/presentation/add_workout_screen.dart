@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
+import 'package:lift_log/features/workout/presentation/widgets/exercise_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
 import '../../../core/constants/app_colors.dart';
@@ -10,6 +10,7 @@ import '../../../data/models/workout_model.dart';
 import '../../../data/models/exercise_model.dart';
 import '../../../data/models/set_entry_model.dart';
 import '../cubit/workout_cubit.dart';
+import '../data/routine_repository.dart';
 
 class AddWorkoutScreen extends StatefulWidget {
   final WorkoutModel? workoutToEdit;
@@ -22,21 +23,84 @@ class AddWorkoutScreen extends StatefulWidget {
 class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
   late TextEditingController _titleController;
   late List<ExerciseModel> _exercises;
+  List<WorkoutModel> _suggestedRoutines = [];
 
   @override
   void initState() {
     super.initState();
     
-    // توليد اسم افتراضي بناءً على وقت اليوم
-    String defaultTitle = _generateDefaultTitle();
+    if (widget.workoutToEdit != null) {
+      _titleController = TextEditingController(text: widget.workoutToEdit!.title);
+      _exercises = List<ExerciseModel>.from(widget.workoutToEdit!.exercises);
+    } else {
+      _titleController = TextEditingController(text: _generateDefaultTitle());
+      _exercises = [];
+      _loadLastSessionExercises();
+    }
     
-    _titleController = TextEditingController(
-      text: widget.workoutToEdit?.title ?? defaultTitle,
-    )..addListener(_autoSave);
+    _fetchSuggestedRoutines();
+    _titleController.addListener(_autoSave);
+  }
+
+  Future<void> _fetchSuggestedRoutines() async {
+    final routines = await RoutineRepository().getSuggestedRoutines();
+    if (mounted) {
+      setState(() {
+        _suggestedRoutines = routines;
+      });
+    }
+  }
+
+  Future<void> _loadLastSessionExercises() async {
+    final workouts = await context.read<WorkoutCubit>().getWorkoutsList();
+    final currentTitle = _titleController.text.trim();
     
-    _exercises = widget.workoutToEdit != null
-        ? List<ExerciseModel>.from(widget.workoutToEdit!.exercises)
-        : [];
+    if (currentTitle.isEmpty) return;
+
+    try {
+      final suggested = _suggestedRoutines.firstWhere(
+        (r) => r.title.toLowerCase().contains(currentTitle.toLowerCase()),
+      );
+      if (_exercises.isEmpty) { 
+        setState(() {
+          _exercises = suggested.exercises.map((ex) => ExerciseModel(
+            id: const Uuid().v4(),
+            name: ex.name,
+            category: ex.category,
+            sets: ex.sets.map((s) => SetEntryModel(weight: s.weight, reps: s.reps)).toList(),
+          )).toList();
+        });
+        _autoSave();
+        return;
+      }
+    } catch (_) {}
+
+    final sortedWorkouts = List<WorkoutModel>.from(workouts)
+      ..sort((a, b) => b.date.compareTo(a.date));
+
+    try {
+      final lastSimilarWorkout = sortedWorkouts.firstWhere(
+        (w) => w.title.toLowerCase() == currentTitle.toLowerCase() && w.id != 'active_workout',
+      );
+
+      if (lastSimilarWorkout.exercises.isNotEmpty) {
+        setState(() {
+          _exercises = lastSimilarWorkout.exercises.map((ex) => ExerciseModel(
+            id: const Uuid().v4(),
+            name: ex.name,
+            category: ex.category,
+            sets: ex.sets.map((s) => SetEntryModel(
+              weight: s.weight, 
+              reps: s.reps,
+              isDone: false,
+            )).toList(),
+          )).toList();
+        });
+        _autoSave();
+      }
+    } catch (e) {
+      // No similar workout found
+    }
   }
 
   String _generateDefaultTitle() {
@@ -55,6 +119,34 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
         category: 'Others',
         sets: [SetEntryModel(weight: 0, reps: 0)],
       ));
+    });
+    _autoSave();
+  }
+
+  void _updateSet(int exIndex, int setIndex, double weight, int reps, bool isDone) {
+    setState(() {
+      final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
+      sets[setIndex] = SetEntryModel(weight: weight, reps: reps, isDone: isDone);
+      _exercises[exIndex] = ExerciseModel(
+        id: _exercises[exIndex].id,
+        name: _exercises[exIndex].name,
+        category: _exercises[exIndex].category,
+        sets: sets,
+      );
+    });
+    _autoSave();
+  }
+
+  void _deleteSet(int exIndex, int setIndex) {
+    setState(() {
+      final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
+      sets.removeAt(setIndex);
+      _exercises[exIndex] = ExerciseModel(
+        id: _exercises[exIndex].id,
+        name: _exercises[exIndex].name,
+        category: _exercises[exIndex].category,
+        sets: sets,
+      );
     });
     _autoSave();
   }
@@ -131,26 +223,52 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
                   ),
                   TextField(
                     controller: _titleController,
+                    onChanged: (val) => _loadLastSessionExercises(),
                     style: AppTextStyles.headlineLg.copyWith(
                       color: theme.colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
                     ),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
+                      hintText: l10n.activeSession,
                     ),
                   ),
-                  Text(
-                    l10n.startedAt(DateFormat('HH:mm').format(widget.workoutToEdit?.date ?? DateTime.now())),
-                    style: AppTextStyles.bodyMd.copyWith(color: Colors.grey),
-                  ),
-                  SizedBox(height: 25.h),
+                  SizedBox(height: 10.h),
+                  if (_suggestedRoutines.isNotEmpty)
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: _suggestedRoutines.map((routine) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: _routineChip(routine.title),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  SizedBox(height: 15.h),
                   ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _exercises.length,
                     itemBuilder: (context, index) {
-                      return _buildExerciseCard(index);
+                      return ExerciseCard(
+                        index: index,
+                        exercise: _exercises[index],
+                        onNameChanged: (val) {
+                          _exercises[index] = ExerciseModel(
+                            id: _exercises[index].id,
+                            name: val,
+                            category: _exercises[index].category,
+                            sets: _exercises[index].sets,
+                          );
+                          _autoSave();
+                        },
+                        onAddSet: () => _addSet(index),
+                        onSetUpdated: (setIndex, weight, reps, isDone) => _updateSet(index, setIndex, weight, reps, isDone),
+                        onSetDeleted: (setIndex) => _deleteSet(index, setIndex),
+                      );
                     },
                   ),
                   SizedBox(height: 10.h),
@@ -165,7 +283,7 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
                     ),
                   ),
-                  SizedBox(height: 100.h), // مساحة للزرار اللي تحت
+                  SizedBox(height: 100.h),
                 ],
               ),
             ),
@@ -206,221 +324,28 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
     );
   }
 
-  Widget _buildExerciseCard(int exIndex) {
-    final theme = Theme.of(context);
-    final exercise = _exercises[exIndex];
-    final l10n = AppLocalizations.of(context)!;
-    
-    return Container(
-      margin: EdgeInsets.only(bottom: 20.h),
-      padding: EdgeInsets.all(16.r),
-      decoration: BoxDecoration(
-        color: theme.cardTheme.color,
-        borderRadius: BorderRadius.circular(16.r),
-        boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 200.w,
-                    child: TextField(
-                      onChanged: (val) {
-                        _exercises[exIndex] = ExerciseModel(
-                          id: exercise.id,
-                          name: val,
-                          category: exercise.category,
-                          sets: exercise.sets,
-                        );
-                        _autoSave();
-                      },
-                      controller: TextEditingController(text: exercise.name)..selection = TextSelection.collapsed(offset: exercise.name.length),
-                      style: AppTextStyles.headlineMd.copyWith(
-                        color: theme.colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                    ),
-                  ),
-                  Text(
-                    'Barbell · Chest',
-                    style: AppTextStyles.bodyMd.copyWith(color: Colors.grey),
-                  ),
-                ],
-              ),
-              Icon(Icons.more_vert, color: Colors.grey, size: 20.sp),
-            ],
-          ),
-          SizedBox(height: 20.h),
-          Row(
-            children: [
-              _headerCell(l10n.set, 40.w),
-              _headerCell('${l10n.weight} (${l10n.kg})'.toUpperCase(), 80.w),
-              _headerCell(l10n.reps.toUpperCase(), 80.w),
-              const Spacer(),
-              _headerCell(l10n.done.toUpperCase(), 50.w),
-            ],
-          ),
-          SizedBox(height: 10.h),
-          ...exercise.sets.asMap().entries.map((entry) => _buildSetRow(exIndex, entry.key, entry.value)),
-          SizedBox(height: 15.h),
-          GestureDetector(
-            onTap: () => _addSet(exIndex),
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(12.r),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.2), style: BorderStyle.solid),
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add, color: Colors.grey, size: 18.sp),
-                  SizedBox(width: 8.w),
-                  Text(l10n.addSet, style: AppTextStyles.bodyMd.copyWith(color: Colors.grey)),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _headerCell(String label, double width) {
-    return SizedBox(
-      width: width,
-      child: Text(
-        label,
-        style: AppTextStyles.labelSm.copyWith(color: Colors.grey, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  Widget _buildSetRow(int exIndex, int setIndex, SetEntryModel set) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 6.h),
-      child: Row(
-        children: [
-          SizedBox(
-            width: 40.w,
-            child: Text(
-              '${setIndex + 1}',
-              style: AppTextStyles.bodyLg.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          _buildInputBox(
-            initialValue: set.weight == 0 ? '' : set.weight.toString(),
-            onChanged: (val) {
-              final weight = double.tryParse(val) ?? 0;
-              final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
-              sets[setIndex] = SetEntryModel(weight: weight, reps: set.reps);
-              _exercises[exIndex] = ExerciseModel(id: _exercises[exIndex].id, name: _exercises[exIndex].name, category: _exercises[exIndex].category, sets: sets);
-              _autoSave();
-            },
-          ),
-          SizedBox(width: 10.w),
-          _buildInputBox(
-            initialValue: set.reps == 0 ? '' : set.reps.toString(),
-            onChanged: (val) {
-              final reps = int.tryParse(val) ?? 0;
-              final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
-              sets[setIndex] = SetEntryModel(weight: set.weight, reps: reps);
-              _exercises[exIndex] = ExerciseModel(id: _exercises[exIndex].id, name: _exercises[exIndex].name, category: _exercises[exIndex].category, sets: sets);
-              _autoSave();
-            },
-          ),
-          const Spacer(),
-          IconButton(
-            icon: Icon(Icons.delete_outline, color: Colors.red[400], size: 20.sp),
-            onPressed: () {
-              setState(() {
-                final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
-                sets.removeAt(setIndex);
-                _exercises[exIndex] = ExerciseModel(
-                  id: _exercises[exIndex].id,
-                  name: _exercises[exIndex].name,
-                  category: _exercises[exIndex].category,
-                  sets: sets,
-                );
-              });
-              _autoSave();
-            },
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                final sets = List<SetEntryModel>.from(_exercises[exIndex].sets);
-                sets[setIndex] = SetEntryModel(
-                  weight: set.weight,
-                  reps: set.reps,
-                  isDone: !set.isDone,
-                );
-                _exercises[exIndex] = ExerciseModel(
-                  id: _exercises[exIndex].id,
-                  name: _exercises[exIndex].name,
-                  category: _exercises[exIndex].category,
-                  sets: sets,
-                );
-              });
-              _autoSave();
-            },
-            child: Container(
-              width: 28.w,
-              height: 28.w,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: set.isDone ? AppColors.primary : Colors.transparent,
-                border: Border.all(
-                  color: set.isDone ? AppColors.primary : Colors.grey.withValues(alpha: 0.3),
-                ),
-              ),
-              child: set.isDone ? Icon(Icons.check, color: Colors.white, size: 16.sp) : null,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInputBox({required String initialValue, required Function(String) onChanged}) {
-    final theme = Theme.of(context);
-    return Container(
-      width: 80.w,
-      height: 40.h,
-      decoration: BoxDecoration(
-        color: theme.brightness == Brightness.dark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-      ),
-      child: TextFormField(
-        initialValue: initialValue,
-        keyboardType: TextInputType.number,
-        textAlign: TextAlign.center,
-        style: AppTextStyles.bodyLg.copyWith(
-          color: theme.colorScheme.onSurface,
-          fontWeight: FontWeight.bold,
+  Widget _routineChip(String title) {
+    final isSelected = _titleController.text.toLowerCase() == title.toLowerCase();
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _titleController.text = title;
+        });
+        _loadLastSessionExercises();
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.primary : AppColors.primary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(20.r),
+          border: Border.all(color: AppColors.primary),
         ),
-        onChanged: onChanged,
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-          isDense: true,
-          contentPadding: EdgeInsets.only(top: 8),
+        child: Text(
+          title,
+          style: AppTextStyles.labelLg.copyWith(
+            color: isSelected ? Colors.white : AppColors.primary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

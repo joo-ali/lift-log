@@ -1,10 +1,14 @@
+import 'package:flutter/foundation.dart';
+
 import '../../../data/data_sources/local/workout_local_data_source.dart';
 import '../../../data/data_sources/local/user_local_data_source.dart';
 import '../../../data/models/workout_model.dart';
+import '../../workout/data/routine_repository.dart';
 
 class HomeRepository {
   final WorkoutLocalDataSource _workoutLocalDataSource;
   final UserLocalDataSource _userLocalDataSource;
+  final RoutineRepository _routineRepository = RoutineRepository();
 
   HomeRepository(this._workoutLocalDataSource, this._userLocalDataSource);
 
@@ -20,8 +24,8 @@ class HomeRepository {
         ? "${workouts.first.title} (${_formatDate(workouts.first.date)})" 
         : 'No activity yet';
     
-    // اسم الجلسة: إما التمرين النشط حالياً أو اسم مقترح بناءً على الوقت
-    final String nextWorkoutTitle = activeWorkout?.title ?? _generateDefaultTitle();
+    // محاولة توقع التمرين القادم بناءً على التاريخ والاقتراحات
+    String nextWorkoutTitle = activeWorkout?.title ?? await _predictNextWorkout(workouts);
     
     return {
       'userName': user?.name ?? 'Athlete',
@@ -29,8 +33,41 @@ class HomeRepository {
       'nextWorkout': nextWorkoutTitle, 
       'streak': calculateStreak(workouts),
       'recentWorkouts': workouts.take(3).toList(),
-      'currentWeight': user?.weight ?? 0.0,
+      'currentWeight': user?.currentWeight ?? 0.0,
     };
+  }
+
+  Future<String> _predictNextWorkout(List<WorkoutModel> history) async {
+    if (history.isEmpty) return _generateDefaultTitle();
+    
+    final lastTitle = history.first.title.toLowerCase();
+    
+    try {
+      final suggestions = await _routineRepository.getSuggestedRoutines();
+      
+      if (suggestions.isNotEmpty) {
+        if (lastTitle.contains('push')) {
+          return suggestions.firstWhere((r) => r.title.toLowerCase().contains('pull'), orElse: () => suggestions[0]).title;
+        }
+        if (lastTitle.contains('pull')) {
+          return suggestions.firstWhere((r) => r.title.toLowerCase().contains('legs'), orElse: () => suggestions[0]).title;
+        }
+        if (lastTitle.contains('legs')) {
+          return suggestions.firstWhere((r) => r.title.toLowerCase().contains('push'), orElse: () => suggestions[0]).title;
+        }
+      }
+    } catch (e) {
+      debugPrint("Error fetching routine suggestions for prediction: $e");
+    }
+
+    if (lastTitle.contains('push')) return 'Pull Day';
+    if (lastTitle.contains('pull')) return 'Legs Day';
+    if (lastTitle.contains('legs')) return 'Push Day';
+    if (lastTitle.contains('upper')) return 'Lower Body';
+    if (lastTitle.contains('lower')) return 'Upper Body';
+    if (lastTitle.contains('full body')) return 'Full Body';
+    
+    return _generateDefaultTitle();
   }
 
   String _generateDefaultTitle() {

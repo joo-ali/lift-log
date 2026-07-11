@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lift_log/data/models/user_model.dart';
@@ -15,17 +16,25 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     try {
       var user = await _authRepository.getCurrentUser();
-      
-      // إذا لم يوجد مستخدم محلي، نحاول جلبه من Firebase (لحماية التطبيق من الخطأ)
-      if (user == null) {
-        final fbUser = FirebaseAuth.instance.currentUser;
-        if (fbUser != null) {
-          user = UserModel(
+      final fbUser = FirebaseAuth.instance.currentUser;
+
+      // إذا لم يوجد مستخدم محلي ولكن المستخدم مسجل دخول في Firebase
+      if (user == null && fbUser != null) {
+        // نحاول جلب البيانات من Firestore أولاً
+        final cloudDoc = await FirebaseFirestore.instance.collection('users').doc(fbUser.uid).get();
+        if (cloudDoc.exists && cloudDoc.data() != null) {
+          final cloudUser = UserModel.fromMap(cloudDoc.data()!);
+          user = cloudUser;
+          await _authRepository.updateUser(cloudUser);
+        } else {
+          // إذا لم توجد بيانات في السحاب، ننشئ بروفايل جديد
+          final newUser = UserModel(
             id: fbUser.uid,
             email: fbUser.email ?? "",
             name: fbUser.displayName ?? fbUser.email?.split('@')[0] ?? "Athlete",
           );
-          await _authRepository.updateUser(user);
+          user = newUser;
+          await _authRepository.updateUser(newUser);
         }
       }
 

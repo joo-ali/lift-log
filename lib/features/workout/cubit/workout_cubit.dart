@@ -46,6 +46,10 @@ class WorkoutCubit extends Cubit<WorkoutState> {
     }
   }
 
+  Future<List<WorkoutModel>> getWorkoutsList() async {
+    return await _workoutRepository.getWorkouts();
+  }
+
   Future<void> saveActiveWorkout(WorkoutModel workout) async {
     try {
       await _workoutRepository.saveActiveWorkout(workout);

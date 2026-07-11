@@ -31,6 +31,28 @@ class UserModel extends HiveObject {
     this.targetWeight = 0.0,
   });
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'email': email,
+      'name': name,
+      'profilePic': profilePic,
+      'currentWeight': currentWeight,
+      'targetWeight': targetWeight,
+    };
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['id'] ?? '',
+      email: map['email'] ?? '',
+      name: map['name'] ?? '',
+      profilePic: map['profilePic'],
+      currentWeight: (map['currentWeight'] ?? 0.0).toDouble(),
+      targetWeight: (map['targetWeight'] ?? 0.0).toDouble(),
+    );
+  }
+
   UserModel copyWith({
     String? name,
     String? profilePic,

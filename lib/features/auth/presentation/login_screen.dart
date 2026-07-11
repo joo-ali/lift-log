@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lift_log/core/widgets/custom_button.dart';
+import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
+import 'package:lift_log/features/auth/presentation/widgets/social_button.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_text_styles.dart';
@@ -70,19 +73,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
                 ),
                 SizedBox(height: 48.h),
-                _buildTextField(
+                CustomTextField(
                   label: l10n.email,
                   hint: 'athlete@liftlog.com',
                   icon: Icons.email_outlined,
                   controller: _emailController,
                 ),
                 SizedBox(height: 20.h),
-                _buildTextField(
+                CustomTextField(
                   label: l10n.password,
                   hint: '********',
                   icon: Icons.lock_outline,
                   isPassword: true,
+                  obscureText: _obscurePassword,
                   controller: _passwordController,
+                  onToggleVisibility: () => setState(() => _obscurePassword = !_obscurePassword),
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -100,37 +105,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 32.h),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
-                    return SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                                context.read<AuthCubit>().login(
-                                      _emailController.text.trim(),
-                                      _passwordController.text.trim(),
-                                    );
-                              },
-                        style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.symmetric(vertical: 16.h),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                        ),
-                        child: state is AuthLoading
-                            ? SizedBox(
-                                height: 20.r,
-                                width: 20.r,
-                                child: const CircularProgressIndicator(
-                                  color: Colors.white, 
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Text(
-                                l10n.login,
-                                style: AppTextStyles.labelLg.copyWith(color: Colors.white),
-                              ),
-                      ),
+                    return CustomButton(
+                      text: l10n.login,
+                      isLoading: state is AuthLoading,
+                      onPressed: () {
+                        context.read<AuthCubit>().login(
+                              _emailController.text.trim(),
+                              _passwordController.text.trim(),
+                            );
+                      },
                     );
                   },
                 ),
@@ -152,17 +135,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: _buildSocialButton(
-                        'Google',
-                        'assets/icons/google.png', // Assuming you have these
+                      child: SocialButton(
+                        label: 'Google',
+                        iconPath: 'assets/icons/google.png',
                         onTap: () => context.read<AuthCubit>().loginWithGoogle(),
                       ),
                     ),
                     SizedBox(width: 16.w),
                     Expanded(
-                      child: _buildSocialButton(
-                        'Apple',
-                        'assets/icons/apple.png', 
+                      child: SocialButton(
+                        label: 'Apple',
+                        iconPath: 'assets/icons/apple.png', 
                         onTap: () {},
                       ),
                     ),
@@ -192,83 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required String hint,
-    required IconData icon,
-    bool isPassword = false,
-    required TextEditingController controller,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label, 
-          style: AppTextStyles.labelSm.copyWith(
-            color: Colors.black87, 
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(height: 8.h),
-        TextField(
-          controller: controller,
-          obscureText: isPassword && _obscurePassword,
-          style: const TextStyle(color: Colors.black),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(color: Colors.black26),
-            prefixIcon: Icon(icon, color: Colors.black45),
-            suffixIcon: isPassword 
-                ? IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      color: Colors.black45,
-                    ),
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
-                  )
-                : null,
-            filled: true,
-            fillColor: Colors.grey[100],
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12.r),
-              borderSide: BorderSide.none,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSocialButton(String label, String iconPath, {required VoidCallback onTap}) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
-      child: Container(
-        height: 56.h,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
-          border: Border.all(color: Colors.grey[200]!),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Using icons instead of images if paths don't exist yet
-            Icon(label == 'Google' ? Icons.g_mobiledata : Icons.apple, size: 28.sp),
-            SizedBox(width: 12.w),
-            Text(
-              label, 
-              style: AppTextStyles.bodyMd.copyWith(
-                fontWeight: FontWeight.bold, 
-                color: Colors.black87,
-              ),
-            ),
-          ],
         ),
       ),
     );
