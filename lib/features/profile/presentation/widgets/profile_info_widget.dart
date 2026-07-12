@@ -1,9 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
-import '../../../data/models/user_model.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/data/models/user_model.dart';
 
 class ProfileInfoWidget extends StatelessWidget {
   final UserModel user;

@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../core/services/firebase_auth_service.dart';
-import '../../../data/data_sources/local/user_local_data_source.dart';
-import '../../../data/models/user_model.dart';
+import 'package:lift_log/core/services/firebase_auth_service.dart';
+import 'package:lift_log/data/data_sources/local/user_local_data_source.dart';
+import 'package:lift_log/data/models/user_model.dart';
 
 import 'package:hive/hive.dart';
-import '../../../core/services/hive_service.dart';
+import 'package:lift_log/core/services/hive_service.dart';
 
 class AuthRepository {
   final FirebaseAuthService _firebaseAuthService;

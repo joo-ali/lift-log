@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../models/user_model.dart';
-import '../../../core/services/hive_service.dart';
+import 'package:lift_log/data/models/user_model.dart';
+import 'package:lift_log/core/services/hive_service.dart';
 
 class UserLocalDataSource {
   Box<UserModel> get _userBox => Hive.box<UserModel>(HiveService.userBox);

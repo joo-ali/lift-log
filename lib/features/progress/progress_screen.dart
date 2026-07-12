@@ -7,12 +7,12 @@ import 'package:lift_log/features/progress/presentation/widgets/progress_streak_
 import 'package:lift_log/features/progress/presentation/widgets/volume_progression_chart.dart';
 import 'package:lift_log/features/progress/presentation/widgets/weight_tracking_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/widgets/stat_card.dart';
-import 'cubit/progress_cubit.dart';
-import '../../../core/di/service_locator.dart';
+import 'package:lift_log/core/widgets/stat_card.dart';
+import 'package:lift_log/features/progress/cubit/progress_cubit.dart';
+import 'package:lift_log/core/di/service_locator.dart';
 
 class ProgressScreen extends StatelessWidget {
   const ProgressScreen({super.key});

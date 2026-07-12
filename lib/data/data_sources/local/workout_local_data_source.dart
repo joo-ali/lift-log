@@ -1,6 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../models/workout_model.dart';
-import '../../../core/services/hive_service.dart';
+import 'package:lift_log/data/models/workout_model.dart';
+import 'package:lift_log/core/services/hive_service.dart';
 
 class WorkoutLocalDataSource {
   Box<WorkoutModel> get _workoutBox => Hive.box<WorkoutModel>(HiveService.workoutBox);
