@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/constants/app_text_styles.dart';
-import '../../../../l10n/app_localizations.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/l10n/app_localizations.dart';
 
 class WorkoutEmptyState extends StatelessWidget {
   const WorkoutEmptyState({super.key});

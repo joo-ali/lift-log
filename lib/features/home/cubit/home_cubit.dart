@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/home_repository.dart';
+import 'package:lift_log/features/home/data/home_repository.dart';
 
 part 'home_state.dart';
 

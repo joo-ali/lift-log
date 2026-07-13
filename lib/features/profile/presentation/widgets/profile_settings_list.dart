@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/constants/app_text_styles.dart';
-import '../../../../core/localization/locale_cubit.dart';
-import '../../../../core/theme/theme_cubit.dart';
-import '../../../../l10n/app_localizations.dart';
-import '../settings_screen.dart';
-import 'profile_settings_item.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/core/localization/locale_cubit.dart';
+import 'package:lift_log/core/theme/theme_cubit.dart';
+import 'package:lift_log/l10n/app_localizations.dart';
+import 'package:lift_log/features/profile/presentation/settings_screen.dart';
+import 'package:lift_log/features/profile/presentation/widgets/profile_settings_item.dart';
 
 class ProfileSettingsList extends StatelessWidget {
   final VoidCallback onLogout;

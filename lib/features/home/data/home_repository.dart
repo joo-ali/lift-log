@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../data/data_sources/local/workout_local_data_source.dart';
-import '../../../data/data_sources/local/user_local_data_source.dart';
-import '../../../data/models/workout_model.dart';
-import '../../workout/data/routine_repository.dart';
+import 'package:lift_log/data/data_sources/local/workout_local_data_source.dart';
+import 'package:lift_log/data/data_sources/local/user_local_data_source.dart';
+import 'package:lift_log/data/models/workout_model.dart';
+import 'package:lift_log/features/workout/data/routine_repository.dart';
 
 class HomeRepository {
   final WorkoutLocalDataSource _workoutLocalDataSource;

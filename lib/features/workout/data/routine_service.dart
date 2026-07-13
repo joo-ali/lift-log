@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../data/models/workout_model.dart';
+import 'package:lift_log/data/models/workout_model.dart';
 
 class RoutineService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

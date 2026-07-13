@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/progress_repository.dart';
+import 'package:lift_log/features/progress/data/progress_repository.dart';
 
 import 'progress_state.dart';
 export 'progress_state.dart';

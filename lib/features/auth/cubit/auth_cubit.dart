@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../data/auth_repository.dart';
+import 'package:lift_log/features/auth/data/auth_repository.dart';
 
 part 'auth_state.dart';
 

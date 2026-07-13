@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../data/workout_repository.dart';
-import '../../../data/models/workout_model.dart';
+import 'package:lift_log/features/workout/data/workout_repository.dart';
+import 'package:lift_log/data/models/workout_model.dart';
 
 part 'workout_state.dart';
 

@@ -10,9 +10,9 @@ import 'package:lift_log/features/profile/presentation/widgets/profile_settings_
 import 'package:lift_log/features/profile/presentation/widgets/profile_stats_grid.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_top_bar.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/di/service_locator.dart';
-import 'cubit/profile_cubit.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/di/service_locator.dart';
+import 'package:lift_log/features/profile/cubit/profile_cubit.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});

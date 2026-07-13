@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/routes/app_router.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/core/routes/app_router.dart';
 
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:lift_log/core/services/hive_service.dart';

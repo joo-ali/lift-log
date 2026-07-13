@@ -1,8 +1,8 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../data/models/set_entry_model.dart';
-import '../../data/models/exercise_model.dart';
-import '../../data/models/workout_model.dart';
-import '../../data/models/user_model.dart';
+import 'package:lift_log/data/models/set_entry_model.dart';
+import 'package:lift_log/data/models/exercise_model.dart';
+import 'package:lift_log/data/models/workout_model.dart';
+import 'package:lift_log/data/models/user_model.dart';
 
 class HiveService {
   static const String workoutBox = 'workouts_box';

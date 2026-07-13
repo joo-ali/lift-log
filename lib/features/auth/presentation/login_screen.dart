@@ -6,9 +6,9 @@ import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
 import 'package:lift_log/features/auth/presentation/widgets/social_button.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../core/routes/app_router.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/core/routes/app_router.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

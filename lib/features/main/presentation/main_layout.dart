@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../home/presentation/home_screen.dart';
-import '../../workout/workout_screen.dart';
-import '../../progress/progress_screen.dart';
-import '../../profile/profile_screen.dart';
-import '../../../core/constants/app_colors.dart';
+import 'package:lift_log/features/home/presentation/home_screen.dart';
+import 'package:lift_log/features/workout/workout_screen.dart';
+import 'package:lift_log/features/progress/progress_screen.dart';
+import 'package:lift_log/features/profile/profile_screen.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});

@@ -5,10 +5,10 @@ import 'package:lift_log/features/workout/presentation/widgets/workout_empty_sta
 import 'package:lift_log/features/workout/presentation/widgets/workout_header.dart';
 import 'package:lift_log/features/workout/presentation/widgets/workout_history_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import 'cubit/workout_cubit.dart';
-import 'presentation/add_workout_screen.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
+import 'package:lift_log/features/workout/presentation/add_workout_screen.dart';
 
 class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({super.key});

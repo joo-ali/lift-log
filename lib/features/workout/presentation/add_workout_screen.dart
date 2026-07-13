@@ -4,13 +4,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lift_log/features/workout/presentation/widgets/exercise_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_text_styles.dart';
-import '../../../data/models/workout_model.dart';
-import '../../../data/models/exercise_model.dart';
-import '../../../data/models/set_entry_model.dart';
-import '../cubit/workout_cubit.dart';
-import '../data/routine_repository.dart';
+import 'package:lift_log/core/constants/app_colors.dart';
+import 'package:lift_log/core/constants/app_text_styles.dart';
+import 'package:lift_log/data/models/workout_model.dart';
+import 'package:lift_log/data/models/exercise_model.dart';
+import 'package:lift_log/data/models/set_entry_model.dart';
+import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
+import 'package:lift_log/features/workout/data/routine_repository.dart';
 
 class AddWorkoutScreen extends StatefulWidget {
   final WorkoutModel? workoutToEdit;

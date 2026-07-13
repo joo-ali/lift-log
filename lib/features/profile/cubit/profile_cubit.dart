@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lift_log/data/models/user_model.dart';
-import '../../auth/data/auth_repository.dart';
-import '../../home/data/home_repository.dart';
-import 'profile_state.dart';
+import 'package:lift_log/features/auth/data/auth_repository.dart';
+import 'package:lift_log/features/home/data/home_repository.dart';
+import 'package:lift_log/features/profile/cubit/profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   final AuthRepository _authRepository;

@@ -1,6 +1,6 @@
-import '../../../data/models/workout_model.dart';
-import '../../../data/models/exercise_model.dart';
-import '../../../data/models/set_entry_model.dart';
+import 'package:lift_log/data/models/workout_model.dart';
+import 'package:lift_log/data/models/exercise_model.dart';
+import 'package:lift_log/data/models/set_entry_model.dart';
 import 'package:uuid/uuid.dart';
 import 'routine_service.dart';
 
