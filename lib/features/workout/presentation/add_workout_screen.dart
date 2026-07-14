@@ -9,6 +9,7 @@ import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/data/models/workout_model.dart';
 import 'package:lift_log/data/models/exercise_model.dart';
 import 'package:lift_log/data/models/set_entry_model.dart';
+import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
 import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
 import 'package:lift_log/features/workout/data/routine_repository.dart';
 
@@ -165,12 +166,27 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
     _autoSave();
   }
 
+  double _calculateTotalVolume() {
+    return _exercises.fold(0, (sum, exercise) => sum + exercise.totalVolume);
+  }
+
   void _autoSave() {
+    final authState = context.read<AuthCubit>().state;
+    String userId = '';
+    if (authState is AuthSuccess) {
+      userId = authState.user?.uid ?? '';
+    } else if (authState is AuthOnboardingRequired) {
+      userId = authState.user.uid;
+    } else if (authState is AuthOfflineSuccess) {
+      userId = authState.user.id;
+    }
+
     final workout = WorkoutModel(
       id: widget.workoutToEdit?.id ?? 'active_workout',
       title: _titleController.text,
       date: widget.workoutToEdit?.date ?? DateTime.now(),
       exercises: _exercises,
+      userId: userId,
     );
     context.read<WorkoutCubit>().saveActiveWorkout(workout);
   }
@@ -223,7 +239,11 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
                   ),
                   TextField(
                     controller: _titleController,
-                    onChanged: (val) => _loadLastSessionExercises(),
+                    onChanged: (val) {
+                      if (_exercises.isEmpty) {
+                        _loadLastSessionExercises();
+                      }
+                    },
                     style: AppTextStyles.headlineLg.copyWith(
                       color: theme.colorScheme.onSurface,
                       fontWeight: FontWeight.bold,
@@ -233,6 +253,16 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
                       contentPadding: EdgeInsets.zero,
                       hintText: l10n.activeSession,
                     ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.fitness_center, size: 16.r, color: Colors.grey),
+                      SizedBox(width: 4.w),
+                      Text(
+                        "Total Volume: ${_calculateTotalVolume().toStringAsFixed(0)} kg",
+                        style: AppTextStyles.bodyMd.copyWith(color: Colors.grey),
+                      ),
+                    ],
                   ),
                   SizedBox(height: 10.h),
                   if (_suggestedRoutines.isNotEmpty)
@@ -295,11 +325,22 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: ElevatedButton.icon(
           onPressed: () {
+            final authState = context.read<AuthCubit>().state;
+            String userId = '';
+            if (authState is AuthSuccess) {
+              userId = authState.user?.uid ?? '';
+            } else if (authState is AuthOnboardingRequired) {
+              userId = authState.user.uid;
+            } else if (authState is AuthOfflineSuccess) {
+              userId = authState.user.id;
+            }
+
             final workout = WorkoutModel(
               id: widget.workoutToEdit?.id ?? const Uuid().v4(),
               title: _titleController.text,
               date: widget.workoutToEdit?.date ?? DateTime.now(),
               exercises: _exercises,
+              userId: userId,
             );
             if (widget.workoutToEdit != null) {
               context.read<WorkoutCubit>().updateWorkout(workout);

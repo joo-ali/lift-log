@@ -39,7 +39,8 @@ class ProfileCubit extends Cubit<ProfileState> {
       }
 
       if (user != null) {
-        final workouts = await _homeRepository.getWorkouts();
+        final allWorkouts = await _homeRepository.getWorkouts();
+        final workouts = allWorkouts.where((w) => w.userId == user!.id).toList();
         final streak = _homeRepository.calculateStreak(workouts);
         emit(ProfileLoaded(
           user: user,

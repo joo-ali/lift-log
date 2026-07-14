@@ -132,7 +132,6 @@ class ExerciseCard extends StatelessWidget {
   }
 
   Widget _buildSetRow(BuildContext context, int setIndex, SetEntryModel set) {
-    final theme = Theme.of(context);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 6.h),
       child: Row(

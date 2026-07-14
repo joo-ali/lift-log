@@ -7,8 +7,23 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final User user;
+  final User? user; // جعلناه اختياري ليدعم حالات الأوفلاين التامة
   AuthSuccess(this.user);
+}
+
+class AuthOnboardingRequired extends AuthState {
+  final User user;
+  AuthOnboardingRequired(this.user);
+}
+
+class AuthOfflineSuccess extends AuthState {
+  final UserModel user;
+  AuthOfflineSuccess(this.user);
+}
+
+class AuthNetworkError extends AuthState {
+  final String message;
+  AuthNetworkError(this.message);
 }
 
 class AuthError extends AuthState {

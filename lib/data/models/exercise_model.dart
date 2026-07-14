@@ -23,11 +23,11 @@ class ExerciseModel extends HiveObject {
 
   factory ExerciseModel.fromJson(Map<String, dynamic> json) {
     return ExerciseModel(
-      id: json['id'],
-      name: json['name'],
-      category: json['category'],
-      sets: (json['sets'] as List)
-          .map((i) => SetEntryModel.fromJson(i))
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      category: json['category'] ?? '',
+      sets: (json['sets'] as List? ?? [])
+          .map((i) => SetEntryModel.fromJson(i as Map<String, dynamic>))
           .toList(),
     );
   }

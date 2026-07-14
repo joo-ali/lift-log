@@ -8,8 +8,9 @@ class ProgressRepository {
 
   ProgressRepository(this._workoutLocalDataSource, this._userLocalDataSource);
 
-  Future<Map<String, dynamic>> getProgressData() async {
-    final workouts = await _workoutLocalDataSource.getWorkouts();
+  Future<Map<String, dynamic>> getProgressData(String userId) async {
+    final allWorkouts = await _workoutLocalDataSource.getWorkouts();
+    final workouts = allWorkouts.where((w) => w.userId == userId).toList();
     final user = await _userLocalDataSource.getUser();
     
     double totalVolume = 0;

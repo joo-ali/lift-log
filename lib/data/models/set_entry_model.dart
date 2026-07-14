@@ -18,8 +18,8 @@ class SetEntryModel extends HiveObject {
   });
 
   factory SetEntryModel.fromJson(Map<String, dynamic> json) => SetEntryModel(
-        weight: json['weight'].toDouble(),
-        reps: json['reps'],
+        weight: (json['weight'] ?? 0.0).toDouble(),
+        reps: json['reps'] ?? 0,
         isDone: json['isDone'] ?? false,
       );
 

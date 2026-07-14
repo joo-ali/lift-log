@@ -5,11 +5,13 @@ import 'package:lift_log/core/constants/app_text_styles.dart';
 class OnboardingWeightInputPage extends StatelessWidget {
   final TextEditingController currentWeightController;
   final TextEditingController targetWeightController;
+  final TextEditingController ageController;
 
   const OnboardingWeightInputPage({
     super.key,
     required this.currentWeightController,
     required this.targetWeightController,
+    required this.ageController,
   });
 
   @override
@@ -21,18 +23,20 @@ class OnboardingWeightInputPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Set Your Goals',
+            'Tell us more about you',
             style: AppTextStyles.headlineLg.copyWith(color: Colors.black),
           ),
           SizedBox(height: 10.h),
           Text(
-            'Tell us about your weight goals.',
+            'This helps us calculate your progress accurately.',
             style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
           ),
           SizedBox(height: 40.h),
-          _WeightField(label: 'Current Weight (kg)', controller: currentWeightController),
+          _InputField(label: 'Age', controller: ageController, hint: 'e.g. 25'),
           SizedBox(height: 20.h),
-          _WeightField(label: 'Target Weight (kg)', controller: targetWeightController),
+          _InputField(label: 'Current Weight (kg)', controller: currentWeightController, hint: '0.0'),
+          SizedBox(height: 20.h),
+          _InputField(label: 'Target Weight (kg)', controller: targetWeightController, hint: '0.0'),
           SizedBox(height: 20.h),
         ],
       ),
@@ -40,13 +44,15 @@ class OnboardingWeightInputPage extends StatelessWidget {
   }
 }
 
-class _WeightField extends StatelessWidget {
+class _InputField extends StatelessWidget {
   final String label;
+  final String hint;
   final TextEditingController controller;
 
-  const _WeightField({
+  const _InputField({
     required this.label,
     required this.controller,
+    required this.hint,
   });
 
   @override
@@ -67,7 +73,7 @@ class _WeightField extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide.none,
             ),
-            hintText: '0.0',
+            hintText: hint,
           ),
         ),
       ],

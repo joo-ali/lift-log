@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,7 +8,6 @@ import 'package:lift_log/features/profile/presentation/widgets/profile_info_widg
 import 'package:lift_log/features/profile/presentation/widgets/profile_settings_list.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_stats_grid.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_top_bar.dart';
-import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/di/service_locator.dart';
 import 'package:lift_log/features/profile/cubit/profile_cubit.dart';

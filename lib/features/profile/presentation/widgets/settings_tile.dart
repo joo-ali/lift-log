@@ -29,7 +29,7 @@ class SettingsTile extends StatelessWidget {
           ? Switch(
               value: switchValue!, 
               onChanged: onSwitchChanged ?? (val) {}, 
-              activeColor: AppColors.primary,
+              activeThumbColor: AppColors.primary,
             )
           : (trailing != null 
               ? Text(trailing!, style: const TextStyle(color: Colors.grey)) 

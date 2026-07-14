@@ -34,8 +34,22 @@ class _LoginScreenState extends State<LoginScreen> {
     final l10n = AppLocalizations.of(context)!;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) {
+        if (state is AuthSuccess || state is AuthOfflineSuccess) {
+          if (state is AuthOfflineSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Working in Offline Mode"),
+                backgroundColor: Colors.orange,
+              ),
+            );
+          }
           Navigator.pushReplacementNamed(context, AppRouter.home);
+        } else if (state is AuthOnboardingRequired) {
+          Navigator.pushReplacementNamed(context, AppRouter.onboarding);
+        } else if (state is AuthNetworkError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message), backgroundColor: Colors.orange),
+          );
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: AppColors.error),

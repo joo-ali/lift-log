@@ -41,6 +41,7 @@ class RoutineRepository {
       id: 'suggested_${title.toLowerCase().replaceAll(' ', '_')}',
       title: title,
       date: DateTime.now(),
+      userId: 'system',
       exercises: exData.map((e) => ExerciseModel(
         id: const Uuid().v4(),
         name: e['name'],

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lift_log/core/services/firebase_auth_service.dart';
 import 'package:lift_log/data/data_sources/local/user_local_data_source.dart';
+import 'package:lift_log/data/models/workout_model.dart';
 import 'package:lift_log/data/models/user_model.dart';
 
 import 'package:hive/hive.dart';
@@ -99,8 +100,28 @@ class AuthRepository {
     return credential;
   }
 
+  Future<UserModel?> getLocalUser() async {
+    return await _localDataSource.getUser();
+  }
+
+  Future<void> updateOnboardingData(double weight, int age) async {
+    final user = await _localDataSource.getUser();
+    if (user != null) {
+      final updatedUser = user.copyWith(
+        currentWeight: weight,
+        age: age,
+        isOnboarded: true,
+      );
+      await updateUser(updatedUser);
+    }
+  }
+
   Future<void> logout() async {
     await _firebaseAuthService.signOut();
+    await _localDataSource.deleteUser();
+    // هنا لازم نمسح التمارين كمان
+    final workoutBox = Hive.box<WorkoutModel>(HiveService.workoutBox);
+    await workoutBox.clear();
   }
 
   Future<UserModel?> getCurrentUser() async {

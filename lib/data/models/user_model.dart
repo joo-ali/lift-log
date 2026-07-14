@@ -22,6 +22,12 @@ class UserModel extends HiveObject {
   @HiveField(5)
   final double targetWeight;
 
+  @HiveField(6)
+  final int age;
+
+  @HiveField(7)
+  final bool isOnboarded;
+
   UserModel({
     required this.id,
     required this.email,
@@ -29,6 +35,8 @@ class UserModel extends HiveObject {
     this.profilePic,
     this.currentWeight = 0.0,
     this.targetWeight = 0.0,
+    this.age = 0,
+    this.isOnboarded = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +47,8 @@ class UserModel extends HiveObject {
       'profilePic': profilePic,
       'currentWeight': currentWeight,
       'targetWeight': targetWeight,
+      'age': age,
+      'isOnboarded': isOnboarded,
     };
   }
 
@@ -50,6 +60,8 @@ class UserModel extends HiveObject {
       profilePic: map['profilePic'],
       currentWeight: (map['currentWeight'] ?? 0.0).toDouble(),
       targetWeight: (map['targetWeight'] ?? 0.0).toDouble(),
+      age: map['age'] ?? 0,
+      isOnboarded: map['isOnboarded'] ?? false,
     );
   }
 
@@ -58,6 +70,8 @@ class UserModel extends HiveObject {
     String? profilePic,
     double? currentWeight,
     double? targetWeight,
+    int? age,
+    bool? isOnboarded,
   }) {
     return UserModel(
       id: id,
@@ -66,6 +80,8 @@ class UserModel extends HiveObject {
       profilePic: profilePic ?? this.profilePic,
       currentWeight: currentWeight ?? this.currentWeight,
       targetWeight: targetWeight ?? this.targetWeight,
+      age: age ?? this.age,
+      isOnboarded: isOnboarded ?? this.isOnboarded,
     );
   }
 }

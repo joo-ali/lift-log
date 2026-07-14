@@ -12,10 +12,14 @@ class HomeRepository {
 
   HomeRepository(this._workoutLocalDataSource, this._userLocalDataSource);
 
-  Future<Map<String, dynamic>> getHomeData() async {
-    final workouts = await _workoutLocalDataSource.getWorkouts();
+  Future<Map<String, dynamic>> getHomeData(String userId) async {
+    final allWorkouts = await _workoutLocalDataSource.getWorkouts();
+    final workouts = allWorkouts.where((w) => w.userId == userId).toList();
     final user = await _userLocalDataSource.getUser();
     final activeWorkout = await _workoutLocalDataSource.getActiveWorkout();
+    
+    // Check if active workout belongs to current user
+    final userActiveWorkout = (activeWorkout != null && activeWorkout.userId == userId) ? activeWorkout : null;
     
     // ترتيب التمارين من الأحدث للأقدم
     workouts.sort((a, b) => b.date.compareTo(a.date));
@@ -25,7 +29,7 @@ class HomeRepository {
         : 'No activity yet';
     
     // محاولة توقع التمرين القادم بناءً على التاريخ والاقتراحات
-    String nextWorkoutTitle = activeWorkout?.title ?? await _predictNextWorkout(workouts);
+    String nextWorkoutTitle = userActiveWorkout?.title ?? await _predictNextWorkout(workouts);
     
     return {
       'userName': user?.name ?? 'Athlete',
