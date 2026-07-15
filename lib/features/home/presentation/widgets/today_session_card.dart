@@ -6,10 +6,12 @@ import 'package:lift_log/l10n/app_localizations.dart';
 
 class TodaySessionCard extends StatelessWidget {
   final String nextWorkout;
+  final String? exercises;
 
   const TodaySessionCard({
     super.key,
     required this.nextWorkout,
+    this.exercises,
   });
 
   @override
@@ -50,7 +52,7 @@ class TodaySessionCard extends StatelessWidget {
                 children: [
                   Icon(Icons.access_time, color: Colors.grey, size: 16.sp),
                   SizedBox(width: 4.w),
-                  Text('10:00 AM', style: AppTextStyles.labelSm.copyWith(color: Colors.grey)),
+                  Text('Flexible', style: AppTextStyles.labelSm.copyWith(color: Colors.grey)),
                 ],
               ),
             ],
@@ -70,8 +72,10 @@ class TodaySessionCard extends StatelessWidget {
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
-                  'Squats, Leg Press, Lunges + 2 more',
+                  exercises ?? 'Start a new routine to see exercises',
                   style: AppTextStyles.bodyMd.copyWith(color: Colors.grey),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

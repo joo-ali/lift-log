@@ -35,8 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final l10n = AppLocalizations.of(context)!;
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthOnboardingRequired) {
-          Navigator.pushReplacementNamed(context, AppRouter.onboarding);
+        if (state is AuthSuccess || state is AuthOfflineSuccess) {
+          Navigator.pushReplacementNamed(context, AppRouter.home);
         } else if (state is AuthError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: AppColors.error),

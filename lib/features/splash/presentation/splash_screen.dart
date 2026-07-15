@@ -28,16 +28,22 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
 
+    final authState = context.read<AuthCubit>().state;
+    
+    // لو اليوزر مسجل دخول فعلاً، بنوديه الهوم علطول حتى لو مشافش الأونبوردينج
+    if (authState is AuthSuccess || authState is AuthOfflineSuccess) {
+      Navigator.pushReplacementNamed(context, AppRouter.home);
+      return;
+    }
+
     final settingsBox = Hive.box(HiveService.settingsBox);
     final bool seenOnboarding = settingsBox.get('seenOnboarding', defaultValue: false);
 
     if (!seenOnboarding) {
       Navigator.pushReplacementNamed(context, AppRouter.onboarding);
-      return;
+    } else {
+      Navigator.pushReplacementNamed(context, AppRouter.login);
     }
-
-    final state = context.read<AuthCubit>().state;
-    _handleNavigation(state);
   }
 
   void _handleNavigation(AuthState state) {

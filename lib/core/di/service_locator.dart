@@ -5,6 +5,7 @@ import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
 import 'package:lift_log/features/home/data/home_repository.dart';
 import 'package:lift_log/features/home/cubit/home_cubit.dart';
 import 'package:lift_log/features/workout/data/workout_repository.dart';
+import 'package:lift_log/features/workout/data/routine_repository.dart';
 import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
 import 'package:lift_log/features/progress/data/progress_repository.dart';
 import 'package:lift_log/features/progress/cubit/progress_cubit.dart';
@@ -33,6 +34,7 @@ Future<void> setupServiceLocator() async {
         sl<UserLocalDataSource>(),
       ));
   sl.registerLazySingleton(() => WorkoutRepository(sl<WorkoutLocalDataSource>()));
+  sl.registerLazySingleton(() => RoutineRepository());
   sl.registerLazySingleton(() => ProgressRepository(
         sl<WorkoutLocalDataSource>(),
         sl<UserLocalDataSource>(),
@@ -41,7 +43,11 @@ Future<void> setupServiceLocator() async {
   // Cubits
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>(), sl<WorkoutRepository>()));
   sl.registerFactory(() => HomeCubit(sl<HomeRepository>(), sl<AuthCubit>()));
-  sl.registerFactory(() => WorkoutCubit(sl<WorkoutRepository>(), sl<AuthCubit>()));
+  sl.registerFactory(() => WorkoutCubit(
+        sl<WorkoutRepository>(),
+        sl<RoutineRepository>(),
+        sl<AuthCubit>(),
+      ));
   sl.registerFactory(() => ProgressCubit(sl<ProgressRepository>(), sl<AuthCubit>()));
   sl.registerFactory(() => ProfileCubit(sl(), sl()));
   sl.registerLazySingleton(() => ThemeCubit());

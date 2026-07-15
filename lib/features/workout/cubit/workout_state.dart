@@ -8,7 +8,8 @@ class WorkoutLoading extends WorkoutState {}
 
 class WorkoutLoaded extends WorkoutState {
   final List<WorkoutModel> workouts;
-  WorkoutLoaded(this.workouts);
+  final List<WorkoutModel> suggestedRoutines;
+  WorkoutLoaded(this.workouts, {this.suggestedRoutines = const []});
 }
 
 class WorkoutError extends WorkoutState {

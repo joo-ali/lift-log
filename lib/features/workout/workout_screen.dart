@@ -9,6 +9,7 @@ import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
 import 'package:lift_log/features/workout/presentation/add_workout_screen.dart';
+import 'package:lift_log/core/routes/app_router.dart';
 
 class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({super.key});
@@ -30,6 +31,11 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, AppRouter.addWorkout),
+        backgroundColor: AppColors.primary,
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
+      ),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
@@ -37,6 +43,95 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const WorkoutHeader(),
+              SizedBox(height: 24.h),
+              
+              // قسم الـ Suggested Splits من الـ API
+              Text(
+                "Suggested Routines", // ممكن نستخدم l10n بعدين
+                style: AppTextStyles.headlineMd.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.colorScheme.onSurface,
+                ),
+              ),
+              SizedBox(height: 12.h),
+              SizedBox(
+                height: 120.h,
+                child: BlocBuilder<WorkoutCubit, WorkoutState>(
+                  builder: (context, state) {
+                    if (state is WorkoutLoaded && state.suggestedRoutines.isNotEmpty) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.suggestedRoutines.length,
+                        itemBuilder: (context, index) {
+                          final routine = state.suggestedRoutines[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddWorkoutScreen(workoutToEdit: routine),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              width: 180.w,
+                              margin: EdgeInsets.only(right: 12.w),
+                              padding: EdgeInsets.all(12.w),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(16.r),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withOpacity(0.3),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    routine.title,
+                                    style: AppTextStyles.bodyLg.copyWith(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  SizedBox(height: 4.h),
+                                  Text(
+                                    "${routine.exercises.length} Exercises",
+                                    style: AppTextStyles.labelSm.copyWith(color: Colors.white70),
+                                  ),
+                                  const Spacer(),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Icon(Icons.play_circle_fill, color: Colors.white, size: 28.w),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    }
+                    return Center(
+                      child: Text(
+                        "Loading routines...",
+                        style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
               SizedBox(height: 24.h),
               Text(
                 l10n.workoutHistory,

@@ -11,10 +11,7 @@ class AuthSuccess extends AuthState {
   AuthSuccess(this.user);
 }
 
-class AuthOnboardingRequired extends AuthState {
-  final User user;
-  AuthOnboardingRequired(this.user);
-}
+
 
 class AuthOfflineSuccess extends AuthState {
   final UserModel user;

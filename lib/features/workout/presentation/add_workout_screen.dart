@@ -9,6 +9,7 @@ import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/data/models/workout_model.dart';
 import 'package:lift_log/data/models/exercise_model.dart';
 import 'package:lift_log/data/models/set_entry_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
 import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
 import 'package:lift_log/features/workout/data/routine_repository.dart';
@@ -172,14 +173,15 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
 
   void _autoSave() {
     final authState = context.read<AuthCubit>().state;
-    String userId = '';
+    String? userId;
     if (authState is AuthSuccess) {
-      userId = authState.user?.uid ?? '';
-    } else if (authState is AuthOnboardingRequired) {
-      userId = authState.user.uid;
+      userId = authState.user?.uid;
     } else if (authState is AuthOfflineSuccess) {
       userId = authState.user.id;
     }
+    
+    userId ??= FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) return;
 
     final workout = WorkoutModel(
       id: widget.workoutToEdit?.id ?? 'active_workout',
@@ -326,14 +328,15 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
         child: ElevatedButton.icon(
           onPressed: () {
             final authState = context.read<AuthCubit>().state;
-            String userId = '';
+            String? userId;
             if (authState is AuthSuccess) {
-              userId = authState.user?.uid ?? '';
-            } else if (authState is AuthOnboardingRequired) {
-              userId = authState.user.uid;
+              userId = authState.user?.uid;
             } else if (authState is AuthOfflineSuccess) {
               userId = authState.user.id;
             }
+            
+            userId ??= FirebaseAuth.instance.currentUser?.uid;
+            if (userId == null) return;
 
             final workout = WorkoutModel(
               id: widget.workoutToEdit?.id ?? const Uuid().v4(),

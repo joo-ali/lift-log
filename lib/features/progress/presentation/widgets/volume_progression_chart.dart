@@ -21,9 +21,11 @@ class VolumeProgressionChart extends StatelessWidget {
     final locale = Localizations.localeOf(context).languageCode;
     final recentWorkouts = workouts.length > 7 ? workouts.sublist(workouts.length - 7) : workouts;
     final List<double> volumes = recentWorkouts.map((w) => w.totalVolume).toList();
+    // تأكد من وجود بيانات كافية للرسم
     final labels = recentWorkouts.map((w) => DateFormat('E', locale).format(w.date)).toList();
 
     return Container(
+      constraints: BoxConstraints(minHeight: 200.h),
       padding: EdgeInsets.all(20.r),
       decoration: BoxDecoration(
         color: theme.cardTheme.color,

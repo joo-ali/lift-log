@@ -6,12 +6,14 @@ class OnboardingNavigation extends StatelessWidget {
   final int currentPage;
   final int totalPages;
   final VoidCallback onNext;
+  final bool isLoading;
 
   const OnboardingNavigation({
     super.key,
     required this.currentPage,
     required this.totalPages,
     required this.onNext,
+    this.isLoading = false,
   });
 
   @override
@@ -35,13 +37,34 @@ class OnboardingNavigation extends StatelessWidget {
               ),
             ),
           ),
-          ElevatedButton(
-            onPressed: onNext,
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+          SizedBox(
+            width: 150.w,
+            height: 50.h,
+            child: ElevatedButton(
+              onPressed: isLoading ? null : onNext,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              ),
+              child: isLoading
+                  ? SizedBox(
+                      height: 20.r,
+                      width: 20.r,
+                      child: const CircularProgressIndicator(
+                        color: Colors.white,
+                        strokeWidth: 2,
+                      ),
+                    )
+                  : Text(
+                      currentPage == totalPages - 1 ? 'Get Started' : 'Next',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
             ),
-            child: Text(currentPage == totalPages - 1 ? 'Get Started' : 'Next'),
           ),
         ],
       ),

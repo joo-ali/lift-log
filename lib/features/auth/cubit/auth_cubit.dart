@@ -19,12 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
         // مزامنة التمارين في الخلفية عند فتح التطبيق
         _workoutRepository.syncWorkoutsFromCloud(user.uid);
 
-        final userModel = await _authRepository.getLocalUser();
-        if (userModel != null && !userModel.isOnboarded) {
-          emit(AuthOnboardingRequired(user));
-        } else {
-          emit(AuthSuccess(user));
-        }
+        emit(AuthSuccess(user));
+        // تحديث الحالة في الخلفية لو محتاجة
+        _authRepository.markOnboardingComplete();
       } else {
         emit(Unauthenticated());
       }
@@ -41,12 +38,8 @@ class AuthCubit extends Cubit<AuthState> {
         // سحب التمارين فور تسجيل الدخول الناجح
         await _workoutRepository.syncWorkoutsFromCloud(userCredential.user!.uid);
         
-        final userModel = await _authRepository.getLocalUser();
-        if (userModel != null && !userModel.isOnboarded) {
-          emit(AuthOnboardingRequired(userCredential.user!));
-        } else {
-          emit(AuthSuccess(userCredential.user!));
-        }
+        emit(AuthSuccess(userCredential.user!));
+        _authRepository.markOnboardingComplete();
       } else {
         emit(AuthError("Login failed"));
       }
@@ -73,12 +66,8 @@ class AuthCubit extends Cubit<AuthState> {
         // سحب التمارين فور تسجيل الدخول بـ Google
         await _workoutRepository.syncWorkoutsFromCloud(userCredential.user!.uid);
 
-        final userModel = await _authRepository.getLocalUser();
-        if (userModel != null && !userModel.isOnboarded) {
-          emit(AuthOnboardingRequired(userCredential.user!));
-        } else {
-          emit(AuthSuccess(userCredential.user!));
-        }
+        emit(AuthSuccess(userCredential.user!));
+        _authRepository.markOnboardingComplete();
       } else {
         emit(AuthError("Google login failed"));
       }
@@ -100,8 +89,9 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final userCredential = await _authRepository.register(email, password, name: name);
       if (userCredential != null && userCredential.user != null) {
-        // بعد التسجيل مباشرة بنطلب Onboarding
-        emit(AuthOnboardingRequired(userCredential.user!));
+        // سجل دخول وروح للهوم فوراً، وبنخلص الأونبوردينج في الخلفية
+        _authRepository.markOnboardingComplete();
+        emit(AuthSuccess(userCredential.user!));
       } else {
         emit(AuthError("Registration failed"));
       }
@@ -110,23 +100,24 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> completeOnboarding(double weight, int age) async {
+  Future<void> completeOnboarding() async {
     emit(AuthLoading());
     try {
-      await _authRepository.updateOnboardingData(weight, age);
-      // نتحقق من وجود المستخدم الحالي
+      await _authRepository.markOnboardingComplete();
+      
       final firebaseUser = FirebaseAuth.instance.currentUser;
       if (firebaseUser != null) {
         emit(AuthSuccess(firebaseUser));
       } else {
-        // في حالة الأوفلاين أو عدم وجود جلسة فعالة
         final localUser = await _authRepository.getLocalUser();
         if (localUser != null) {
           emit(AuthOfflineSuccess(localUser));
+        } else {
+          emit(Unauthenticated());
         }
       }
     } catch (e) {
-      emit(AuthError(e.toString()));
+      emit(Unauthenticated());
     }
   }
 

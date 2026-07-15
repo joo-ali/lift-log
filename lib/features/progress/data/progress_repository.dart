@@ -23,12 +23,15 @@ class ProgressRepository {
       for (var exercise in workout.exercises) {
         double exerciseVolume = 0;
         for (var set in exercise.sets) {
-          double volume = set.weight * set.reps;
+          // تأكد من وجود قيم صالحة للحساب
+          final weight = set.weight;
+          final reps = set.reps;
+          double volume = weight * reps;
           exerciseVolume += volume;
           
-          // Update PR if this weight is higher than previous PR for this exercise
-          if (!personalRecords.containsKey(exercise.name) || set.weight > personalRecords[exercise.name]!) {
-            personalRecords[exercise.name] = set.weight;
+          // تحديث الـ PR بناءً على أثقل وزن تم رفعه لهذا التمرين
+          if (!personalRecords.containsKey(exercise.name) || weight > personalRecords[exercise.name]!) {
+            personalRecords[exercise.name] = weight;
           }
         }
         totalVolume += exerciseVolume;

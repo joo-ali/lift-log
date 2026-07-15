@@ -25,7 +25,7 @@ class OnboardingInfoPage extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(20.r),
             decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
+              color: AppColors.primary.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
             child: Icon(icon, size: 80.sp, color: AppColors.primary),

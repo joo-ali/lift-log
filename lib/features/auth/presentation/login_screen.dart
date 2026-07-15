@@ -44,8 +44,6 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
           Navigator.pushReplacementNamed(context, AppRouter.home);
-        } else if (state is AuthOnboardingRequired) {
-          Navigator.pushReplacementNamed(context, AppRouter.onboarding);
         } else if (state is AuthNetworkError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message), backgroundColor: Colors.orange),

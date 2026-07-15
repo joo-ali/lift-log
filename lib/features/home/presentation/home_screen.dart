@@ -41,7 +41,10 @@ class HomeScreen extends StatelessWidget {
                     children: [
                       HeaderWidget(userName: data['userName'] ?? 'Athlete'),
                       SizedBox(height: 25.h),
-                      TodaySessionCard(nextWorkout: data['nextWorkout']),
+                      TodaySessionCard(
+                        nextWorkout: data['nextWorkout'],
+                        exercises: data['nextWorkoutExercises'],
+                      ),
                       SizedBox(height: 20.h),
                       Row(
                         children: [
@@ -75,13 +78,30 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 15.h),
-                      ...(data['recentWorkouts'] as List).map((w) {
-                        return ActivityItem(
-                          title: w.title,
-                          subtitle: l10n.done,
-                          weight: '${w.totalVolume.toStringAsFixed(0)} ${l10n.kg}',
-                        );
-                      }),
+                      if ((data['recentWorkouts'] as List).isEmpty)
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 20.h),
+                            child: Column(
+                              children: [
+                                Icon(Icons.fitness_center, color: Colors.grey[300], size: 50.sp),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  "No workouts yet. Start your journey!",
+                                  style: TextStyle(color: Colors.grey[500]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      else
+                        ...(data['recentWorkouts'] as List).map((w) {
+                          return ActivityItem(
+                            title: w.title,
+                            subtitle: l10n.done,
+                            weight: '${w.totalVolume.toStringAsFixed(0)} ${l10n.kg}',
+                          );
+                        }),
                     ],
                   ),
                 );
