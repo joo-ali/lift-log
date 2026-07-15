@@ -61,7 +61,6 @@ class AuthRepository {
           name: credential.user!.displayName ?? email.split('@')[0],
         );
         await _localDataSource.saveUser(newUser);
-        await _mergeTempOnboardingData(newUser);
       }
     }
     return credential;
@@ -80,7 +79,6 @@ class AuthRepository {
           name: credential.user!.displayName ?? credential.user!.email?.split('@')[0] ?? "Athlete",
         );
         await _localDataSource.saveUser(newUser);
-        await _mergeTempOnboardingData(newUser);
       }
     }
     return credential;
@@ -104,14 +102,13 @@ class AuthRepository {
     return await _localDataSource.getUser();
   }
 
-  Future<void> updateOnboardingData(double weight, int age) async {
+  Future<void> markOnboardingComplete() async {
+    final settingsBox = Hive.box(HiveService.settingsBox);
+    await settingsBox.put('seenOnboarding', true);
+
     final user = await _localDataSource.getUser();
     if (user != null) {
-      final updatedUser = user.copyWith(
-        currentWeight: weight,
-        age: age,
-        isOnboarded: true,
-      );
+      final updatedUser = user.copyWith(isOnboarded: true);
       await updateUser(updatedUser);
     }
   }
@@ -129,13 +126,14 @@ class AuthRepository {
   }
 
   Future<void> updateUser(UserModel user) async {
-    // حفظ محلي
+    // حفظ محلي فوراً
     await _localDataSource.saveUser(user);
-    // حفظ في Firestore
-    try {
-      await _firestore.collection('users').doc(user.id).set(user.toMap(), SetOptions(merge: true));
-    } catch (e) {
-      // فشل المزامنة السحابية
-    }
+    
+    // التحديث في Firestore في الخلفية بدون انتظار (No await)
+    _firestore
+        .collection('users')
+        .doc(user.id)
+        .set(user.toMap(), SetOptions(merge: true))
+        .catchError((e) => print("Firestore Update Error: $e"));
   }
 }
