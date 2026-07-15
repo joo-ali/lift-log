@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lift_log/features/auth/presentation/login_screen.dart';
 import 'package:lift_log/features/auth/presentation/register_screen.dart';
-import 'package:lift_log/features/onboarding/onboarding_screen.dart';
 import 'package:lift_log/features/profile/profile_screen.dart';
 import 'package:lift_log/features/progress/progress_screen.dart';
 import 'package:lift_log/features/splash/presentation/splash_screen.dart';
@@ -11,7 +10,6 @@ import 'package:lift_log/features/workout/presentation/add_workout_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
-  static const String onboarding = '/onboarding';
   static const String login = '/login';
   static const String register = '/register';
   static const String home = '/home';
@@ -24,8 +22,6 @@ class AppRouter {
     switch (settings.name) {
       case splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
-      case onboarding:
-        return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case login:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case register:

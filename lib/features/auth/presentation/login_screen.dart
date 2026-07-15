@@ -55,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -76,13 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   l10n.loginWelcomeBack,
                   style: AppTextStyles.headlineLg.copyWith(
                     fontWeight: FontWeight.bold, 
-                    color: Colors.black,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   l10n.loginSubtitle,
-                  style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
+                  style: AppTextStyles.bodyMd.copyWith(
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                  ),
                 ),
                 SizedBox(height: 48.h),
                 CustomTextField(
@@ -137,7 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       child: Text(
                         l10n.orContinueWith, 
-                        style: AppTextStyles.labelSm.copyWith(color: Colors.black38),
+                        style: AppTextStyles.labelSm.copyWith(
+                          color: Theme.of(context).textTheme.labelSmall?.color?.withOpacity(0.5),
+                        ),
                       ),
                     ),
                     const Expanded(child: Divider()),
@@ -169,7 +173,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Text(
                       "${l10n.newToGrind} ", 
-                      style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
+                      style: AppTextStyles.bodyMd.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(context, AppRouter.register),

@@ -44,12 +44,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            icon: Icon(Icons.arrow_back, color: Theme.of(context).iconTheme.color),
             onPressed: () => Navigator.pop(context),
           ),
         ),
@@ -64,13 +64,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   l10n.registerTitle,
                   style: AppTextStyles.headlineLg.copyWith(
                     fontWeight: FontWeight.bold, 
-                    color: Colors.black,
+                    color: Theme.of(context).textTheme.displayLarge?.color,
                   ),
                 ),
                 SizedBox(height: 8.h),
                 Text(
                   l10n.registerSubtitle,
-                  style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
+                  style: AppTextStyles.bodyMd.copyWith(
+                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                  ),
                 ),
                 SizedBox(height: 40.h),
                 CustomTextField(
@@ -118,7 +120,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   children: [
                     Text(
                       "${l10n.alreadyHaveAccount} ", 
-                      style: AppTextStyles.bodyMd.copyWith(color: Colors.black54),
+                      style: AppTextStyles.bodyMd.copyWith(
+                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.pop(context),

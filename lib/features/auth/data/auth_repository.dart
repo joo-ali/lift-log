@@ -4,7 +4,6 @@ import 'package:lift_log/core/services/firebase_auth_service.dart';
 import 'package:lift_log/data/data_sources/local/user_local_data_source.dart';
 import 'package:lift_log/data/models/workout_model.dart';
 import 'package:lift_log/data/models/user_model.dart';
-
 import 'package:hive/hive.dart';
 import 'package:lift_log/core/services/hive_service.dart';
 
@@ -26,31 +25,13 @@ class AuthRepository {
         await _localDataSource.saveUser(cloudUser);
       }
     } catch (e) {
-      // فشل المزامنة السحابية، سنعتمد على البيانات المحلية أو الافتراضية
-    }
-  }
-
-  Future<void> _mergeTempOnboardingData(UserModel user) async {
-    final settingsBox = Hive.box(HiveService.settingsBox);
-    final tempCurrent = settingsBox.get('temp_current_weight');
-    final tempTarget = settingsBox.get('temp_target_weight');
-
-    if (tempCurrent != null || tempTarget != null) {
-      final updatedUser = user.copyWith(
-        currentWeight: tempCurrent ?? user.currentWeight,
-        targetWeight: tempTarget ?? user.targetWeight,
-      );
-      await updateUser(updatedUser); // التحديث هنا يرفع لـ Firestore أيضاً
-      
-      await settingsBox.delete('temp_current_weight');
-      await settingsBox.delete('temp_target_weight');
+      // فشل المزامنة السحابية، سنعتمد على البيانات المحلية
     }
   }
 
   Future<UserCredential?> login(String email, String password) async {
     final credential = await _firebaseAuthService.signIn(email, password);
     if (credential != null && credential.user != null) {
-      // جلب البيانات من السحاب فور تسجيل الدخول
       await _syncProfileFromCloud(credential.user!.uid);
       
       final existingUser = await _localDataSource.getUser();
@@ -92,8 +73,7 @@ class AuthRepository {
         email: email,
         name: name ?? email.split('@')[0],
       );
-      await updateUser(userModel); // الحفظ محلياً وفي Firestore
-      await _mergeTempOnboardingData(userModel);
+      await updateUser(userModel);
     }
     return credential;
   }
@@ -102,21 +82,9 @@ class AuthRepository {
     return await _localDataSource.getUser();
   }
 
-  Future<void> markOnboardingComplete() async {
-    final settingsBox = Hive.box(HiveService.settingsBox);
-    await settingsBox.put('seenOnboarding', true);
-
-    final user = await _localDataSource.getUser();
-    if (user != null) {
-      final updatedUser = user.copyWith(isOnboarded: true);
-      await updateUser(updatedUser);
-    }
-  }
-
   Future<void> logout() async {
     await _firebaseAuthService.signOut();
     await _localDataSource.deleteUser();
-    // هنا لازم نمسح التمارين كمان
     final workoutBox = Hive.box<WorkoutModel>(HiveService.workoutBox);
     await workoutBox.clear();
   }
@@ -126,10 +94,7 @@ class AuthRepository {
   }
 
   Future<void> updateUser(UserModel user) async {
-    // حفظ محلي فوراً
     await _localDataSource.saveUser(user);
-    
-    // التحديث في Firestore في الخلفية بدون انتظار (No await)
     _firestore
         .collection('users')
         .doc(user.id)

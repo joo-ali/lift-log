@@ -49,7 +49,11 @@ Future<void> setupServiceLocator() async {
         sl<AuthCubit>(),
       ));
   sl.registerFactory(() => ProgressCubit(sl<ProgressRepository>(), sl<AuthCubit>()));
-  sl.registerFactory(() => ProfileCubit(sl(), sl()));
+  sl.registerFactory(() => ProfileCubit(
+        sl<AuthRepository>(),
+        sl<HomeRepository>(),
+        sl<WorkoutRepository>(),
+      ));
   sl.registerLazySingleton(() => ThemeCubit());
   sl.registerLazySingleton(() => LocaleCubit());
 }

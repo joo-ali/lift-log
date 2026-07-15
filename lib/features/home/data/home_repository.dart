@@ -139,8 +139,4 @@ class HomeRepository {
     if (diff == 1) return "Yesterday";
     return "${date.day}/${date.month}";
   }
-
-  Future<List<WorkoutModel>> getWorkouts() async {
-    return await _workoutLocalDataSource.getWorkouts();
-  }
 }
