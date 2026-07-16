@@ -92,5 +92,10 @@
   "weightCurrent": "Current Weight",
   "morningWorkout": "Morning Workout",
   "newExercise": "New Exercise",
-  "keepGoing": "Keep going! You're doing great."
+  "keepGoing": "Keep going! You're doing great.",
+  "flexible": "Flexible",
+  "startNewRoutine": "Start new routine",
+  "morningSession": "Morning Session",
+  "afternoonSession": "Afternoon Session",
+  "eveningSession": "Evening Session"
 }

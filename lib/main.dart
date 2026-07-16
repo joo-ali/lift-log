@@ -60,8 +60,7 @@ class LiftLogApp extends StatelessWidget {
           return BlocBuilder<LocaleCubit, Locale>(
             builder: (context, locale) {
               return MaterialApp(
-                // Combine DevicePreview locale with our LocaleCubit logic
-                locale: !kReleaseMode ? DevicePreview.locale(context) : locale,
+                locale: locale,
                 builder: DevicePreview.appBuilder,
                 title: 'Lift Log',
                 debugShowCheckedModeBanner: false,

@@ -91,5 +91,10 @@
   "fullName": "الاسم بالكامل",
   "signUp": "تسجيل جديد",
   "alreadyHaveAccount": "لديك حساب بالفعل؟",
-  "keepGoing": "استمر! أنت تبلي بلاءً حسناً."
+  "keepGoing": "استمر! أنت تبلي بلاءً حسناً.",
+  "flexible": "مرن",
+  "startNewRoutine": "ابدأ روتين جديد",
+  "morningSession": "تمرين صباحي",
+  "afternoonSession": "تمرين بعد الظهر",
+  "eveningSession": "تمرين مسائي"
 }

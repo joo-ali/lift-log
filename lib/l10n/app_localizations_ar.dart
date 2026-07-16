@@ -223,4 +223,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get keepGoing => 'استمر! أنت تبلي بلاءً حسناً.';
+
+  @override
+  String get flexible => 'مرن';
+
+  @override
+  String get startNewRoutine => 'ابدأ روتين جديد';
+
+  @override
+  String get morningSession => 'تمرين صباحي';
+
+  @override
+  String get afternoonSession => 'تمرين بعد الظهر';
+
+  @override
+  String get eveningSession => 'تمرين مسائي';
 }

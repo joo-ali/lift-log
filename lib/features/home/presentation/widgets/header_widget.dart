@@ -4,6 +4,7 @@ import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/core/theme/theme_cubit.dart';
+import 'package:lift_log/core/localization/locale_cubit.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -44,6 +45,34 @@ class HeaderWidget extends StatelessWidget {
           ],
         ),
         const Spacer(),
+        // Language Toggle
+        IconButton(
+          onPressed: () => context.read<LocaleCubit>().toggleLocale(),
+          icon: Container(
+            padding: EdgeInsets.all(8.r),
+            decoration: BoxDecoration(
+              color: theme.cardTheme.color,
+              shape: BoxShape.circle,
+              boxShadow: [
+                if (theme.brightness == Brightness.light)
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                  )
+              ],
+            ),
+            child: Text(
+              l10n.localeName == 'ar' ? 'EN' : 'AR',
+              style: TextStyle(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
+                fontSize: 12.sp,
+              ),
+            ),
+          ),
+        ),
+        // Theme Toggle
         IconButton(
           onPressed: () => context.read<ThemeCubit>().toggleTheme(),
           icon: Container(

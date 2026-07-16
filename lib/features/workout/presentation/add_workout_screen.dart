@@ -106,10 +106,11 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
   }
 
   String _generateDefaultTitle() {
+    final l10n = AppLocalizations.of(context)!;
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Morning Session';
-    if (hour < 17) return 'Afternoon Session';
-    return 'Evening Session';
+    if (hour < 12) return l10n.morningSession;
+    if (hour < 17) return l10n.afternoonSession;
+    return l10n.eveningSession;
   }
 
   void _addExercise() {

@@ -12,6 +12,8 @@ import 'package:lift_log/features/profile/presentation/widgets/profile_top_bar.d
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/di/service_locator.dart';
 import 'package:lift_log/features/profile/cubit/profile_cubit.dart';
+import 'package:lift_log/core/theme/theme_cubit.dart';
+import 'package:lift_log/core/localization/locale_cubit.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -62,6 +64,9 @@ class ProfileScreen extends StatelessWidget {
                         onUpdateTarget: () => _showUpdateWeightDialog(context, state.user.targetWeight, isTarget: true),
                       ),
                       SizedBox(height: 25.h),
+                      // Settings Section
+                      _buildSettingsSection(context),
+                      SizedBox(height: 25.h),
                       // Logout Button
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
@@ -97,6 +102,78 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsSection(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
+
+    return Container(
+      padding: EdgeInsets.all(16.r),
+      decoration: BoxDecoration(
+        color: theme.cardTheme.color,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          if (theme.brightness == Brightness.light)
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            l10n.settings,
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
+            ),
+          ),
+          SizedBox(height: 15.h),
+          // Language Switch
+          BlocBuilder<LocaleCubit, Locale>(
+            builder: (context, locale) {
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(Icons.language, color: AppColors.primary),
+                title: Text(l10n.language, style: TextStyle(fontWeight: FontWeight.w500)),
+                trailing: Text(
+                  locale.languageCode == 'ar' ? 'العربية' : 'English',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                onTap: () => context.read<LocaleCubit>().toggleLocale(),
+              );
+            },
+          ),
+          Divider(height: 20.h),
+          // Theme Switch
+          BlocBuilder<ThemeCubit, ThemeMode>(
+            builder: (context, themeMode) {
+              final isDark = themeMode == ThemeMode.dark ||
+                  (themeMode == ThemeMode.system &&
+                      MediaQuery.of(context).platformBrightness == Brightness.dark);
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  isDark ? Icons.dark_mode : Icons.light_mode,
+                  color: AppColors.primary,
+                ),
+                title: Text(l10n.theme, style: TextStyle(fontWeight: FontWeight.w500)),
+                trailing: Switch(
+                  value: isDark,
+                  onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
+                  activeColor: AppColors.primary,
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

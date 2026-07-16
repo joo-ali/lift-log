@@ -61,9 +61,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 60.h),
-                  const AuthHeader(
-                    title: 'Welcome Back',
-                    subtitle: 'Login to track your progress',
+                  AuthHeader(
+                    title: l10n.loginWelcomeBack,
+                    subtitle: l10n.loginSubtitle,
                   ),
                   SizedBox(height: 50.h),
                   CustomTextField(

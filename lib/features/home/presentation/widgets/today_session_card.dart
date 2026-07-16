@@ -52,7 +52,7 @@ class TodaySessionCard extends StatelessWidget {
                 children: [
                   Icon(Icons.access_time, color: Colors.grey, size: 16.sp),
                   SizedBox(width: 4.w),
-                  Text('Flexible', style: AppTextStyles.labelSm.copyWith(color: Colors.grey)),
+                  Text(l10n.flexible, style: AppTextStyles.labelSm.copyWith(color: Colors.grey)),
                 ],
               ),
             ],
@@ -72,7 +72,7 @@ class TodaySessionCard extends StatelessWidget {
               SizedBox(width: 10.w),
               Expanded(
                 child: Text(
-                  exercises ?? 'Start a new routine to see exercises',
+                  exercises ?? l10n.startNewRoutine,
                   style: AppTextStyles.bodyMd.copyWith(color: Colors.grey),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,

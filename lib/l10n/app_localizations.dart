@@ -517,6 +517,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep going! You\'re doing great.'**
   String get keepGoing;
+
+  /// No description provided for @flexible.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible'**
+  String get flexible;
+
+  /// No description provided for @startNewRoutine.
+  ///
+  /// In en, this message translates to:
+  /// **'Start new routine'**
+  String get startNewRoutine;
+
+  /// No description provided for @morningSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning Session'**
+  String get morningSession;
+
+  /// No description provided for @afternoonSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon Session'**
+  String get afternoonSession;
+
+  /// No description provided for @eveningSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening Session'**
+  String get eveningSession;
 }
 
 class _AppLocalizationsDelegate

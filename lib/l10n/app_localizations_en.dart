@@ -223,4 +223,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get keepGoing => 'Keep going! You\'re doing great.';
+
+  @override
+  String get flexible => 'Flexible';
+
+  @override
+  String get startNewRoutine => 'Start new routine';
+
+  @override
+  String get morningSession => 'Morning Session';
+
+  @override
+  String get afternoonSession => 'Afternoon Session';
+
+  @override
+  String get eveningSession => 'Evening Session';
 }
