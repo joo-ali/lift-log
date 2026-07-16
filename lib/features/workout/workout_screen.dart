@@ -55,12 +55,13 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               ),
               SizedBox(height: 12.h),
               SizedBox(
-                height: 120.h,
+                height: 150.h, // زودنا الارتفاع عشان نمنع الـ Overflow
                 child: BlocBuilder<WorkoutCubit, WorkoutState>(
                   builder: (context, state) {
                     if (state is WorkoutLoaded && state.suggestedRoutines.isNotEmpty) {
                       return ListView.builder(
                         scrollDirection: Axis.horizontal,
+                        padding: EdgeInsets.symmetric(vertical: 8.h), // مساحة للـ Shadow
                         itemCount: state.suggestedRoutines.length,
                         itemBuilder: (context, index) {
                           final routine = state.suggestedRoutines[index];
@@ -74,27 +75,26 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                               );
                             },
                             child: Container(
-                              width: 180.w,
-                              margin: EdgeInsets.only(right: 12.w),
-                              padding: EdgeInsets.all(12.w),
+                              width: 190.w, // عرض مناسب
+                              margin: EdgeInsets.only(right: 16.w),
+                              padding: EdgeInsets.all(16.w),
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: [AppColors.primary, AppColors.primary.withOpacity(0.7)],
+                                  colors: [AppColors.primary, AppColors.primary.withValues(alpha: 0.8)],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                                borderRadius: BorderRadius.circular(16.r),
+                                borderRadius: BorderRadius.circular(20.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: AppColors.primary.withOpacity(0.3),
-                                    blurRadius: 8,
+                                    color: AppColors.primary.withValues(alpha: 0.3),
+                                    blurRadius: 10,
                                     offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
                                     routine.title,
@@ -105,15 +105,28 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
-                                  SizedBox(height: 4.h),
+                                  SizedBox(height: 6.h),
                                   Text(
                                     "${routine.exercises.length} Exercises",
                                     style: AppTextStyles.labelSm.copyWith(color: Colors.white70),
                                   ),
                                   const Spacer(),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Icon(Icons.play_circle_fill, color: Colors.white, size: 28.w),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withValues(alpha: 0.2),
+                                          borderRadius: BorderRadius.circular(8.r),
+                                        ),
+                                        child: Text(
+                                          "Quick Start",
+                                          style: TextStyle(color: Colors.white, fontSize: 10.sp),
+                                        ),
+                                      ),
+                                      Icon(Icons.play_circle_fill, color: Colors.white, size: 32.sp),
+                                    ],
                                   ),
                                 ],
                               ),
