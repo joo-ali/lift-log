@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/core/widgets/stat_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 
@@ -39,3 +39,5 @@ class ProfileStatsGrid extends StatelessWidget {
     );
   }
 }
+
+

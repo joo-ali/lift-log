@@ -128,3 +128,4 @@ class HomeRepository {
     return streak;
   }
 }
+

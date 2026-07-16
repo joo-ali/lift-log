@@ -22,3 +22,4 @@ class WorkoutHeader extends StatelessWidget {
     );
   }
 }
+

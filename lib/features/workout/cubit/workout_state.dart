@@ -16,3 +16,4 @@ class WorkoutError extends WorkoutState {
   final String message;
   WorkoutError(this.message);
 }
+

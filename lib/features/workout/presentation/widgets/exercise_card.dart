@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/data/models/exercise_model.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
@@ -135,3 +135,5 @@ class ExerciseCard extends StatelessWidget {
     );
   }
 }
+
+

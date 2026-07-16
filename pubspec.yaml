@@ -25,7 +25,7 @@ dependencies:
   get_it: ^9.2.1
   
   # Responsive UI
-  flutter_screenutil: ^5.9.3
+  device_preview: ^1.2.0
   
   # Media
   image_picker: ^1.1.2

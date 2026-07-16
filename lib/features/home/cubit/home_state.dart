@@ -15,3 +15,4 @@ class HomeError extends HomeState {
   final String message;
   HomeError(this.message);
 }
+

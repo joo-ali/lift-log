@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
@@ -31,7 +32,12 @@ void main() async {
   // 3. Setup Service Locator
   await setupServiceLocator();
 
-  runApp(const LiftLogApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => const LiftLogApp(),
+    ),
+  );
 }
 
 class LiftLogApp extends StatelessWidget {
@@ -53,32 +59,28 @@ class LiftLogApp extends StatelessWidget {
         builder: (context, themeMode) {
           return BlocBuilder<LocaleCubit, Locale>(
             builder: (context, locale) {
-              return ScreenUtilInit(
-                designSize: const Size(393, 852),
-                minTextAdapt: true,
-                splitScreenMode: true,
-                builder: (context, child) {
-                  return MaterialApp(
-                    title: 'Lift Log',
-                    debugShowCheckedModeBanner: false,
-                    theme: AppTheme.lightTheme,
-                    darkTheme: AppTheme.darkTheme,
-                    themeMode: themeMode,
-                    locale: locale,
-                    supportedLocales: const [
-                      Locale('en'),
-                      Locale('ar'),
-                    ],
-                    localizationsDelegates: const [
-                      AppLocalizations.delegate,
-                      GlobalMaterialLocalizations.delegate,
-                      GlobalWidgetsLocalizations.delegate,
-                      GlobalCupertinoLocalizations.delegate,
-                    ],
-                    onGenerateRoute: AppRouter.generateRoute,
-                    initialRoute: AppRouter.splash,
-                  );
-                },
+              return MaterialApp(
+                useInheritedMediaQuery: true,
+                // Combine DevicePreview locale with our LocaleCubit logic
+                locale: !kReleaseMode ? DevicePreview.locale(context) : locale,
+                builder: DevicePreview.appBuilder,
+                title: 'Lift Log',
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: themeMode,
+                supportedLocales: const [
+                  Locale('en'),
+                  Locale('ar'),
+                ],
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                onGenerateRoute: AppRouter.generateRoute,
+                initialRoute: AppRouter.splash,
               );
             },
           );
@@ -87,3 +89,4 @@ class LiftLogApp extends StatelessWidget {
     );
   }
 }
+

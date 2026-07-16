@@ -77,3 +77,4 @@ class ProgressRepository {
     return streak;
   }
 }
+

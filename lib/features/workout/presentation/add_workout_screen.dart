@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/features/workout/presentation/widgets/exercise_card.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:uuid/uuid.dart';
@@ -395,3 +395,5 @@ class _AddWorkoutScreenState extends State<AddWorkoutScreen> {
     );
   }
 }
+
+

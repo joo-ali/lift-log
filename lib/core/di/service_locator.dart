@@ -57,3 +57,4 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton(() => ThemeCubit());
   sl.registerLazySingleton(() => LocaleCubit());
 }
+

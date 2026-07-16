@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/features/home/presentation/home_screen.dart';
 import 'package:lift_log/features/workout/workout_screen.dart';
 import 'package:lift_log/features/progress/progress_screen.dart';
@@ -61,3 +61,5 @@ class _MainLayoutState extends State<MainLayout> {
     );
   }
 }
+
+

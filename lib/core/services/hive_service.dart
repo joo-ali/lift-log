@@ -24,3 +24,4 @@ class HiveService {
     await Hive.openBox(settingsBox);
   }
 }
+

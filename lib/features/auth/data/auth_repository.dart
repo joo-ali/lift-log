@@ -88,3 +88,4 @@ class AuthRepository {
         .catchError((e) => print("Firestore Update Error: $e"));
   }
 }
+

@@ -111,3 +111,4 @@ class WorkoutCubit extends Cubit<WorkoutState> {
     await _workoutRepository.deleteActiveWorkout();
   }
 }
+

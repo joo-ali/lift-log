@@ -9,3 +9,4 @@ class AppAssets {
   static const String googleIcon = '${_baseIconPath}google.png';
   static const String appleIcon = '${_baseIconPath}apple.png';
 }
+

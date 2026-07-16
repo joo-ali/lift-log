@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/data/models/workout_model.dart';
 import 'package:lift_log/features/progress/presentation/widgets/personal_record_item.dart';
 import 'package:lift_log/features/progress/presentation/widgets/progress_header.dart';
@@ -113,3 +113,5 @@ class ProgressScreen extends StatelessWidget {
     );
   }
 }
+
+

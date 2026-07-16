@@ -29,3 +29,4 @@ class SetEntryModel extends HiveObject {
         'isDone': isDone,
       };
 }
+

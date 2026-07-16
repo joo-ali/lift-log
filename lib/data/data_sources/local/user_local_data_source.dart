@@ -17,3 +17,4 @@ class UserLocalDataSource {
     await _userBox.delete('current_user');
   }
 }
+

@@ -26,3 +26,4 @@ class AppColors {
   static const Color textPrimary = Colors.white;
   static const Color textSecondary = Color(0xFFBDBDBD);
 }
+

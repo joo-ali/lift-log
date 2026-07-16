@@ -45,3 +45,4 @@ class ExerciseModel extends HiveObject {
     return sets.fold(0, (sum, set) => sum + (set.weight * set.reps));
   }
 }
+

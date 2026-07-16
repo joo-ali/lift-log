@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/di/service_locator.dart';
 import 'package:lift_log/features/home/cubit/home_cubit.dart';
@@ -96,3 +96,4 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/features/workout/presentation/widgets/workout_empty_state.dart';
 import 'package:lift_log/features/workout/presentation/widgets/workout_header.dart';
 import 'package:lift_log/features/workout/presentation/widgets/workout_history_card.dart';
@@ -194,3 +194,4 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     );
   }
 }
+

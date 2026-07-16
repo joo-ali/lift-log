@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lift_log/core/routes/app_router.dart';
 import 'package:lift_log/core/widgets/custom_button.dart';
@@ -150,3 +150,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+

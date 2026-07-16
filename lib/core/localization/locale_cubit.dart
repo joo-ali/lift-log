@@ -28,3 +28,4 @@ class LocaleCubit extends Cubit<Locale> {
     setLocale(newLocale);
   }
 }
+

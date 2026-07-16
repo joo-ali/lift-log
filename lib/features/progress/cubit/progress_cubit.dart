@@ -57,3 +57,4 @@ class ProgressCubit extends Cubit<ProgressState> {
     }
   }
 }
+

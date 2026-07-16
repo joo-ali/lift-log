@@ -27,3 +27,4 @@ class ThemeCubit extends Cubit<ThemeMode> {
     emit(newMode);
   }
 }
+

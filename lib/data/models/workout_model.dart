@@ -71,3 +71,4 @@ class WorkoutModel extends HiveObject {
     return exercises.fold(0, (sum, exercise) => sum + exercise.totalVolume);
   }
 }
+

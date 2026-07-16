@@ -105,3 +105,4 @@ class ProfileCubit extends Cubit<ProfileState> {
     await _authRepository.logout();
   }
 }
+

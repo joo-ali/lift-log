@@ -15,3 +15,4 @@ class ProgressError extends ProgressState {
   final String message;
   const ProgressError(this.message);
 }
+

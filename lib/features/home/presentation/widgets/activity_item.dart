@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lift_log/core/utils/responsive.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/constants/app_text_styles.dart';
 
@@ -67,3 +67,5 @@ class ActivityItem extends StatelessWidget {
     );
   }
 }
+
+

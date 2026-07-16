@@ -29,3 +29,4 @@ class AuthError extends AuthState {
 }
 
 class Unauthenticated extends AuthState {}
+
