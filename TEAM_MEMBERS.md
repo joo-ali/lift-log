@@ -1,53 +1,70 @@
-# 👥 فريق عمل مشروع Lift Log - تفاصيل المهام والتقنيات المستخدمة
+# 👥 توزيع مهام فريق عمل مشروع Lift Log (ملفات الكود)
 
-هذا الدليل يوضح المهام التقنية لكل عضو في الفريق، مع شرح للأدوات والتقنيات التي تم توظيفها في كل جزء من المشروع لضمان تقديم تجربة مستخدم متكاملة.
-
----
-
-## 🏗️ 1. مازن وكيرو (Mazen & Kero)
-**المسؤولية:** تطوير "المحرك الأساسي" للتطبيق (الشاشة الرئيسية، نظام تسجيل التمارين، والرسوم البيانية).
-
-### 🛠️ التقنيات والأساليب البرمجية:
-*   **تخزين البيانات المحلي (Hive):** استُخدم في `WorkoutRepository` و `WorkoutCubit` لحفظ بيانات التمارين والمجموعات (Sets) محلياً. هذا يضمن أن المستخدم يستطيع تسجيل تمرينه حتى في حالة عدم وجود إنترنت (Offline-first approach).
-*   **التصميم المتجاوب (Media Query):** تم استخدامها في `HomeScreen` و `WorkoutScreen` لضبط أبعاد الكروت، الخطوط، والرسومات البيانية بحيث تظهر بشكل متناسق على شاشات الموبايل المختلفة.
-*   **الرسم المخصص (Custom Painter):** تم استخدامه في `lib/core/widgets/custom_line_chart.dart` لرسم منحنيات تقدم الحجم التدريبي (Volume Progression) برمجياً، مما يوفر رؤية بصرية دقيقة لأداء المستخدم.
-*   **الربط مع السيرفر (REST APIs):** التعامل مع `RoutineService` لجلب جداول التمارين المقترحة من **MockAPI** وتحويلها من JSON إلى نماذج (Models) قابلة للعرض.
-*   **تكامل المكونات (Core Integration):** 
-    *   استخدام `LoadingOverlay` من الـ Core لإظهار حالة الحفظ.
-    *   تقسيم واجهة التمرين المعقدة إلى مكونات صغيرة مثل `ExerciseSetRow` لسهولة الصيانة.
-    *   استخدام `CustomBottomNavBar` للتنقل السلس.
+هذا الدليل يحدد الملفات البرمجية التي سيقوم كل عضو بمناقشتها، لضمان تغطية كاملة لمبادئ Clean Architecture و Responsive Design.
 
 ---
 
-## 🔐 يوسف وزياد (Yousef & Ziad)
-**المسؤولية:** نظام الحماية، المصادقة، وإدارة الجلسات (Authentication - Login & Register).
+## 🏗️ 1. مازن (Mazen) - [Home & Data Architecture]
+**المسؤولية:** إدارة تدفق البيانات من السيرفر والمزامنة مع الـ UI الرئيسي.
 
-### 🛠️ التقنيات والأساليب البرمجية:
-*   **Firebase Authentication:** الاعتماد عليه كمحرك أساسي لتأمين حسابات المستخدمين وإدارة عمليات تسجيل الدخول والخروج.
-*   **التحقق الذكي (Form Validation):** استخدام `GlobalKey<FormState>` مع الـ Controllers المخصصة للتأكد من أن البيانات المدخلة (مثل الإيميل وكلمة المرور) صحيحة قبل إرسالها للسيرفر.
-*   **إدارة الحالة (Cubit):** برمجة الـ `AuthCubit` للتعامل مع حالات الشاشة المختلفة (مثل `AuthLoading`, `AuthAuthenticated`, `AuthError`) مع عرض رسائل تنبيهية للمستخدم.
-*   **تكامل المكونات (Core Integration):**
-    *   بناء الواجهات باستخدام `CustomTextField` الموحد لضمان ثبات الهوية البصرية.
-    *   استخدام `AuthHeader` و `SocialButton` و `LabelDivider` من الـ Core لتقليل تكرار الأكواد.
-
----
-
-## 👤 عبده (Abdo)
-**المسؤولية:** الملف الشخصي، الإعدادات، وإدارة السمات واللغات (Profile, Settings, & State Persistance).
-
-### 🛠️ التقنيات والأساليب البرمجية:
-*   **نظام اللغات (Localization):** تطوير الـ `LocaleCubit` الذي يعتمد على **Hive** لحفظ لغة المستخدم المفضلة (عربي/إنجليزي) بشكل دائم على الجهاز، بحيث يتذكر التطبيق اختيارك حتى بعد إغلاقه.
-*   **إدارة السمات (Theme Management):** استخدام الـ `ThemeCubit` لتمكين الـ **Dark Mode** وربطه بالـ `AppTheme` المركزي الموجود في الـ Core.
-*   **المزامنة السحابية (Cloud Firestore):** استُخدم في `ProfileRepository` لحفظ بيانات المستخدم الحيوية (الوزن، الطول، الأهداف) على السحاب لضمان عدم ضياعها.
-*   **التخطيط الشبكي والمتجاوب (Grid View & Media Query):** استُخدمت في `ProfileStatsGrid` لترتيب إحصائيات المستخدم في مربعات متساوية تتكيف مع عرض الشاشة.
-*   **تكامل المكونات (Core Integration):**
-    *   استخدام `CustomDialog` من الـ Core لعمل رسائل تأكيد الخروج بشكل احترافي.
-    *   توحيد العناوين باستخدام مكون `SectionTitle`.
+### 📄 الملفات للمناقشة:
+*   **UI:** `lib/features/home/presentation/home_screen.dart`
+*   **Logic:** `lib/features/home/cubit/home_cubit.dart`
+*   **Data:** `lib/features/home/data/home_repository.dart`
+*   **Models:** `lib/data/models/user_model.dart`
+*   **Widgets:** `lib/features/home/presentation/widgets/` (Today Session Card & Activity Items).
 
 ---
 
-## 🛠️ البنية التحتية (The Core Infrastructure)
-تم العمل جماعياً على هذه الملفات لتكون الأساس المتين للمشروع:
-*   **`AppColors` & `AppTextStyles`:** تعريف مركزي لكل الألوان والخطوط لضمان تناسق الشكل.
-*   **`Service Locator (GetIt)`:** إعداد الـ Dependency Injection لضمان سهولة الوصول للـ Repositories والـ Cubits بكلمة `sl()`.
-*   **`CustomButton`:** زر ذكي يدعم حالات التحميل (Loading) والألوان المتغيرة تلقائياً.
+## 📊 2. كيرو (Kero) - [Workout Engine & Analytics]
+**المسؤولية:** محرك التمارين، تسجيل الجلسات، والرسوم البيانية المعقدة.
+
+### 📄 الملفات للمناقشة:
+*   **UI:** `lib/features/workout/workout_screen.dart` & `add_workout_screen.dart`
+*   **Analytics:** `lib/features/progress/progress_screen.dart`
+*   **Custom Painting:** `lib/core/widgets/custom_line_chart.dart`
+*   **Remote Data:** `lib/features/workout/data/routine_repository.dart` (REST APIs)
+*   **Models:** `workout_model.dart` & `exercise_model.dart`.
+
+---
+
+## 🔐 3. يوسف (Yousef) - [Authentication & Routing]
+**المسؤولية:** تأمين التطبيق، الربط مع Firebase، وإدارة التنقل (Navigation Flow).
+
+### 📄 الملفات للمناقشة:
+*   **UI:** `lib/features/auth/presentation/login_screen.dart`
+*   **Logic:** `lib/features/auth/cubit/auth_cubit.dart`
+*   **Service:** `lib/core/services/firebase_auth_service.dart`
+*   **Routing:** `lib/core/routes/app_router.dart`
+*   **Widgets:** `auth_header.dart` من مجلد الـ Auth.
+
+---
+
+## 📝 4. زياد (Ziad) - [User Onboarding & Form Logic]
+**المسؤولية:** شاشات التسجيل، التحقق من صحة البيانات (Validation)، والـ Repository الخاص بالمستخدم.
+
+### 📄 الملفات للمناقشة:
+*   **UI:** `lib/features/auth/presentation/register_screen.dart`
+*   **Data:** `lib/features/auth/data/auth_repository.dart`
+*   **Utility:** `lib/core/utils/validators.dart` (التحقق من الإيميل وقوة كلمة المرور).
+*   **Widgets:** `social_button.dart` & `label_divider.dart`.
+
+---
+
+## 👤 5. عبده (Abdo) - [Profile & Globalization]
+**المسؤولية:** إدارة حساب المستخدم، اللغات (Localization)، والثيم (Dark/Light Mode).
+
+### 📄 الملفات للمناقشة:
+*   **UI:** `lib/features/profile/profile_screen.dart`
+*   **Logic:** `lib/features/profile/cubit/profile_cubit.dart`
+*   **Persistence:** `lib/core/theme/theme_cubit.dart` & `locale_cubit.dart` (Hive storage).
+*   **Localization:** `lib/l10n/` (ملفات الترجمة العربي والإنجليزي).
+*   **Widgets:** `profile_info_widget.dart` & `profile_goal_card.dart`.
+
+---
+
+## 🛠️ تقنيات مشتركة (The Core)
+تم استخدام هذه الأدوات في جميع الملفات المذكورة أعلاه:
+*   **ScreenUtil:** لضمان أن جميع أبعاد الـ `h`, `w`, `r`, `sp` متناسبة مع كل الشاشات.
+*   **Hive:** للتخزين المحلي فوري السرعة (Zero Latency).
+*   **GetIt (sl):** للـ Dependency Injection لضمان سهولة الاختبار والصيانة.
