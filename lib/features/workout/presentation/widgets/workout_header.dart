@@ -17,10 +17,7 @@ class WorkoutHeader extends StatelessWidget {
             color: AppColors.primary,
           ),
         ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.onSurface),
-        ),
+        // Removed settings icon as per request to simplify UI
       ],
     );
   }

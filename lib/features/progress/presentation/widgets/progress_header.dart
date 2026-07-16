@@ -23,7 +23,7 @@ class ProgressHeader extends StatelessWidget {
             color: AppColors.primary,
           ),
         ),
-        Icon(Icons.settings_outlined, color: Theme.of(context).colorScheme.onSurface),
+        const SizedBox(width: 40), // Placeholder to maintain alignment after removing settings icon
       ],
     );
   }

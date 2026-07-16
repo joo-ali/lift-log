@@ -7,7 +7,6 @@ import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/profile/cubit/profile_state.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_goal_card.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_info_widget.dart';
-import 'package:lift_log/features/profile/presentation/widgets/profile_settings_list.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_stats_grid.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_top_bar.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
@@ -63,13 +62,30 @@ class ProfileScreen extends StatelessWidget {
                         onUpdateTarget: () => _showUpdateWeightDialog(context, state.user.targetWeight, isTarget: true),
                       ),
                       SizedBox(height: 25.h),
-                      ProfileSettingsList(
-                        onLogout: () async {
-                          await context.read<ProfileCubit>().logout();
-                          if (context.mounted) {
-                            Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
-                          }
-                        },
+                      // Logout Button
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
+                            foregroundColor: Colors.redAccent,
+                            elevation: 0,
+                            minimumSize: Size(double.infinity, 50.h),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                          ),
+                          onPressed: () async {
+                            await context.read<ProfileCubit>().logout();
+                            if (context.mounted) {
+                              Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+                            }
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.logout,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ),
                       SizedBox(height: 30.h),
                     ],
