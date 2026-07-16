@@ -26,7 +26,7 @@ class SocialButton extends StatelessWidget {
       child: Container(
         height: 56.h,
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(12.r),
           border: Border.all(
             color: isDark ? Colors.white10 : Colors.grey[200]!,

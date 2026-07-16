@@ -12,6 +12,7 @@ class CustomTextField extends StatelessWidget {
   final VoidCallback? onToggleVisibility;
   final TextInputType? keyboardType;
   final String? suffixText;
+  final bool enabled;
 
   const CustomTextField({
     super.key,
@@ -24,6 +25,7 @@ class CustomTextField extends StatelessWidget {
     this.onToggleVisibility,
     this.keyboardType,
     this.suffixText,
+    this.enabled = true,
   });
 
   @override
@@ -48,6 +50,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           obscureText: isPassword && obscureText,
           keyboardType: keyboardType,
+          enabled: enabled,
           style: TextStyle(color: theme.textTheme.bodyLarge?.color),
           decoration: InputDecoration(
             hintText: hint,

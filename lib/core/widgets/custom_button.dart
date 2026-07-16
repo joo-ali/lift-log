@@ -5,7 +5,7 @@ import 'package:lift_log/core/constants/app_text_styles.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? color;
   final Color? textColor;
   final double? width;
@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
   const CustomButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.color,
     this.textColor,
     this.width,
@@ -36,6 +36,7 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.r),
           ),
+          disabledBackgroundColor: (color ?? AppColors.primary).withValues(alpha: 0.6),
         ),
         onPressed: isLoading ? null : onPressed,
         child: isLoading

@@ -138,7 +138,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                     return Center(
                       child: Text(
                         "Loading routines...",
-                        style: TextStyle(color: theme.colorScheme.onSurface.withOpacity(0.5)),
+                        style: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
                       ),
                     );
                   },

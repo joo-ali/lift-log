@@ -17,7 +17,7 @@ class LabelDivider extends StatelessWidget {
           child: Text(
             label,
             style: AppTextStyles.labelSm.copyWith(
-              color: Theme.of(context).textTheme.labelSmall?.color?.withOpacity(0.5),
+              color: Theme.of(context).textTheme.labelSmall?.color?.withValues(alpha: 0.5),
             ),
           ),
         ),
