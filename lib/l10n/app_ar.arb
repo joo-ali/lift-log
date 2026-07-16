@@ -15,7 +15,6 @@
     }
   },
   "kg": "كجم",
-  "keepGoing": "عاش يا بطل!",
   "done": "تم",
   "profile": "الحساب الشخصي",
   "yourProgress": "تقدمك",
@@ -64,6 +63,13 @@
   "weight": "وزن",
   "reps": "عدات",
   "addSet": "إضافة مجموعة",
+  "editName": "تعديل الاسم",
+  "save": "حفظ",
+  "username": "اسم المستخدم",
+  "enterName": "أدخل اسمك",
+  "updateGoalWeight": "تحديث الوزن المستهدف",
+  "updateCurrentWeight": "تحديث الوزن الحالي",
+  "weightCurrent": "الوزن الحالي",
   "morningWorkout": "تمرين صباحي",
   "newExercise": "تمرين جديد",
   "goalWeight": "الوزن المستهدف",
@@ -77,12 +83,12 @@
   "password": "كلمة المرور",
   "forgotPassword": "نسيت كلمة المرور؟",
   "login": "تسجيل الدخول",
-  "orContinueWith": "أو المتابعة باستخدام",
   "newToGrind": "جديد في ليفت لوج؟",
   "createAccount": "إنشاء حساب",
   "registerTitle": "إنشاء حساب",
   "registerSubtitle": "ابدأ رحلتك اليوم",
   "fullName": "الاسم بالكامل",
   "signUp": "تسجيل جديد",
-  "alreadyHaveAccount": "لديك حساب بالفعل؟"
+  "alreadyHaveAccount": "لديك حساب بالفعل؟",
+  "keepGoing": "استمر! أنت تبلي بلاءً حسناً."
 }

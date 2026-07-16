@@ -39,12 +39,7 @@ class ProfileSettingsList extends StatelessWidget {
           ProfileSettingsItem(
             icon: Icons.settings_outlined,
             title: l10n.settings,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsScreen()),
-              );
-            },
+            onTap: null,
           ),
           Divider(color: theme.brightness == Brightness.dark ? Colors.black26 : Colors.grey[100], height: 1),
           BlocBuilder<LocaleCubit, Locale>(

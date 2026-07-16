@@ -45,23 +45,29 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/logo.png',
+              width: 150.w,
+              height: 150.h,
+            ),
+            SizedBox(height: 24.h),
             Text(
               'Lift Log',
               style: AppTextStyles.displayLg.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w800,
                 letterSpacing: 2,
-                fontSize: 42.sp,
+                fontSize: 32.sp,
               ),
             ),
-            SizedBox(height: 12.h),
+            SizedBox(height: 8.h),
             Text(
               'TRACK YOUR GAINS',
               style: AppTextStyles.labelSm.copyWith(
                 color: isDark ? Colors.white70 : Colors.black54,
                 letterSpacing: 4,
                 fontWeight: FontWeight.bold,
-                fontSize: 14.sp,
+                fontSize: 12.sp,
               ),
             ),
             SizedBox(height: 60.h),

@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lift_log/core/widgets/custom_button.dart';
 import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
-import 'package:lift_log/features/auth/presentation/widgets/social_button.dart';
+import 'package:lift_log/features/auth/presentation/widgets/auth_header.dart';
+import 'package:lift_log/features/auth/presentation/widgets/auth_footer.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/constants/app_text_styles.dart';
@@ -62,29 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(height: 60.h),
-                Container(
-                  height: 80.r,
-                  width: 80.r,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(20.r),
-                  ),
-                  child: Icon(Icons.fitness_center, color: AppColors.primary, size: 40.sp),
-                ),
-                SizedBox(height: 32.h),
-                Text(
-                  l10n.loginWelcomeBack,
-                  style: AppTextStyles.headlineLg.copyWith(
-                    fontWeight: FontWeight.bold, 
-                    color: Theme.of(context).textTheme.displayLarge?.color,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  l10n.loginSubtitle,
-                  style: AppTextStyles.bodyMd.copyWith(
-                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                  ),
+                AuthHeader(
+                  title: l10n.loginWelcomeBack,
+                  subtitle: l10n.loginSubtitle,
                 ),
                 SizedBox(height: 48.h),
                 CustomTextField(
@@ -131,63 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   },
                 ),
-                SizedBox(height: 32.h),
-                Row(
-                  children: [
-                    const Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      child: Text(
-                        l10n.orContinueWith, 
-                        style: AppTextStyles.labelSm.copyWith(
-                          color: Theme.of(context).textTheme.labelSmall?.color?.withOpacity(0.5),
-                        ),
-                      ),
-                    ),
-                    const Expanded(child: Divider()),
-                  ],
-                ),
-                SizedBox(height: 32.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: SocialButton(
-                        label: 'Google',
-                        iconPath: 'assets/icons/google.png',
-                        onTap: () => context.read<AuthCubit>().loginWithGoogle(),
-                      ),
-                    ),
-                    SizedBox(width: 16.w),
-                    Expanded(
-                      child: SocialButton(
-                        label: 'Apple',
-                        iconPath: 'assets/icons/apple.png', 
-                        onTap: () {},
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(height: 48.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "${l10n.newToGrind} ", 
-                      style: AppTextStyles.bodyMd.copyWith(
-                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, AppRouter.register),
-                      child: Text(
-                        l10n.createAccount,
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.primary, 
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                AuthFooter(
+                  text: l10n.newToGrind,
+                  actionText: l10n.createAccount,
+                  onActionTap: () => Navigator.pushNamed(context, AppRouter.register),
                 ),
                 SizedBox(height: 24.h),
               ],

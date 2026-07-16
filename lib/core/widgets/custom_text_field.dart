@@ -28,41 +28,55 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: AppTextStyles.labelSm.copyWith(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
+        if (label.isNotEmpty) ...[
+          Text(
+            label,
+            style: AppTextStyles.labelSm.copyWith(
+              color: theme.textTheme.bodyLarge?.color?.withValues(alpha: 0.8),
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        SizedBox(height: 8.h),
+          SizedBox(height: 8.h),
+        ],
         TextField(
           controller: controller,
           obscureText: isPassword && obscureText,
           keyboardType: keyboardType,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(color: theme.textTheme.bodyLarge?.color),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: const TextStyle(color: Colors.black26),
-            prefixIcon: Icon(icon, color: Colors.black45),
+            hintStyle: TextStyle(color: theme.hintColor),
+            prefixIcon: Icon(icon, color: theme.iconTheme.color?.withValues(alpha: 0.5)),
             suffixText: suffixText,
+            suffixStyle: TextStyle(color: theme.textTheme.bodyMedium?.color),
             suffixIcon: isPassword
                 ? IconButton(
                     icon: Icon(
                       obscureText ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                      color: Colors.black45,
+                      color: theme.iconTheme.color?.withValues(alpha: 0.5),
                     ),
                     onPressed: onToggleVisibility,
                   )
                 : null,
             filled: true,
-            fillColor: Colors.grey[100],
+            fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.r),
               borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12.r),
+              borderSide: BorderSide(color: theme.primaryColor, width: 1),
             ),
           ),
         ),

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
-import 'package:lift_log/core/constants/app_text_styles.dart';
 import 'package:lift_log/core/di/service_locator.dart';
 import 'package:lift_log/features/home/cubit/home_cubit.dart';
+import 'package:lift_log/core/widgets/section_title.dart';
+import 'package:lift_log/core/widgets/empty_state_widget.dart';
 import 'package:lift_log/core/widgets/stat_card.dart';
 import 'package:lift_log/features/home/presentation/widgets/activity_item.dart';
 import 'package:lift_log/features/home/presentation/widgets/header_widget.dart';
@@ -52,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                             child: StatCard(
                               title: l10n.weeklyStreak,
                               value: data['streak'].toString(),
-                              unit: '/ ${l10n.daysCount(data['streak']).split(' / ').last}',
+                              unit: '/ ${l10n.daysCount(7).split(' / ').last}',
                               progress: (data['streak'] as int) / 7,
                             ),
                           ),
@@ -63,36 +64,17 @@ class HomeScreen extends StatelessWidget {
                               value: data['currentWeight'].toString(),
                               unit: l10n.kg,
                               icon: Icons.scale,
-                              subtitle: l10n.keepGoing,
+                              subtitle: '${l10n.target}: ${data['targetWeight']} ${l10n.kg}',
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 25.h),
-                      Text(
-                        l10n.recentActivity,
-                        style: AppTextStyles.headlineMd.copyWith(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18.sp,
-                          color: theme.colorScheme.onSurface,
-                        ),
-                      ),
+                      SectionTitle(title: l10n.recentActivity),
                       SizedBox(height: 15.h),
                       if ((data['recentWorkouts'] as List).isEmpty)
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 20.h),
-                            child: Column(
-                              children: [
-                                Icon(Icons.fitness_center, color: Colors.grey[300], size: 50.sp),
-                                SizedBox(height: 10.h),
-                                Text(
-                                  "No workouts yet. Start your journey!",
-                                  style: TextStyle(color: Colors.grey[500]),
-                                ),
-                              ],
-                            ),
-                          ),
+                        EmptyStateWidget(
+                          message: "No workouts yet. Start your journey!",
                         )
                       else
                         ...(data['recentWorkouts'] as List).map((w) {

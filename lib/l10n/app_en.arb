@@ -7,7 +7,6 @@
   "password": "Password",
   "forgotPassword": "Forgot Password?",
   "login": "Login",
-  "orContinueWith": "Or continue with",
   "newToGrind": "New to LiftLog?",
   "createAccount": "Create Account",
   "registerTitle": "Create Account",
@@ -29,7 +28,6 @@
     }
   },
   "kg": "kg",
-  "keepGoing": "Keep going!",
   "done": "Done",
   "profile": "Profile",
   "progress": "Progress",
@@ -84,6 +82,14 @@
   "weight": "WEIGHT",
   "reps": "REPS",
   "addSet": "Add Set",
+  "editName": "Edit Name",
+  "save": "Save",
+  "username": "Username",
+  "enterName": "Enter your name",
+  "updateGoalWeight": "Update Goal Weight",
+  "updateCurrentWeight": "Update Current Weight",
+  "weightCurrent": "Current Weight",
   "morningWorkout": "Morning Workout",
-  "newExercise": "New Exercise"
+  "newExercise": "New Exercise",
+  "keepGoing": "Keep going! You're doing great."
 }

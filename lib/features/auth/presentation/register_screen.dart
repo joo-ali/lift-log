@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lift_log/core/routes/app_router.dart';
 import 'package:lift_log/core/widgets/custom_button.dart';
 import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/auth/cubit/auth_cubit.dart';
 import 'package:lift_log/l10n/app_localizations.dart';
 import 'package:lift_log/core/constants/app_colors.dart';
-import 'package:lift_log/core/constants/app_text_styles.dart';
-import 'package:lift_log/core/routes/app_router.dart';
+import 'package:lift_log/features/auth/presentation/widgets/auth_header.dart';
+import 'package:lift_log/features/auth/presentation/widgets/auth_footer.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -20,6 +21,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _currentWeightController = TextEditingController();
+  final TextEditingController _targetWeightController = TextEditingController();
   bool _obscurePassword = true;
 
   @override
@@ -27,6 +30,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _currentWeightController.dispose();
+    _targetWeightController.dispose();
     super.dispose();
   }
 
@@ -60,19 +65,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20.h),
-                Text(
-                  l10n.registerTitle,
-                  style: AppTextStyles.headlineLg.copyWith(
-                    fontWeight: FontWeight.bold, 
-                    color: Theme.of(context).textTheme.displayLarge?.color,
-                  ),
-                ),
-                SizedBox(height: 8.h),
-                Text(
-                  l10n.registerSubtitle,
-                  style: AppTextStyles.bodyMd.copyWith(
-                    color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                  ),
+                AuthHeader(
+                  title: l10n.registerTitle,
+                  subtitle: l10n.registerSubtitle,
+                  showLogo: false,
                 ),
                 SizedBox(height: 40.h),
                 CustomTextField(
@@ -98,6 +94,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _passwordController,
                   onToggleVisibility: () => setState(() => _obscurePassword = !_obscurePassword),
                 ),
+                SizedBox(height: 20.h),
+                Row(
+                  children: [
+                    Expanded(
+                      child: CustomTextField(
+                        label: l10n.currentWeight,
+                        hint: '0.0',
+                        icon: Icons.scale_outlined,
+                        controller: _currentWeightController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                    Expanded(
+                      child: CustomTextField(
+                        label: l10n.goalWeight,
+                        hint: '0.0',
+                        icon: Icons.track_changes_outlined,
+                        controller: _targetWeightController,
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(height: 40.h),
                 BlocBuilder<AuthCubit, AuthState>(
                   builder: (context, state) {
@@ -109,32 +129,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               _emailController.text.trim(),
                               _passwordController.text.trim(),
                               _nameController.text.trim(),
+                              currentWeight: double.tryParse(_currentWeightController.text) ?? 0.0,
+                              targetWeight: double.tryParse(_targetWeightController.text) ?? 0.0,
                             );
                       },
                     );
                   },
                 ),
                 SizedBox(height: 24.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "${l10n.alreadyHaveAccount} ", 
-                      style: AppTextStyles.bodyMd.copyWith(
-                        color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Text(
-                        l10n.login,
-                        style: AppTextStyles.bodyMd.copyWith(
-                          color: AppColors.primary, 
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                AuthFooter(
+                  text: l10n.alreadyHaveAccount,
+                  actionText: l10n.login,
+                  onActionTap: () => Navigator.pop(context),
                 ),
               ],
             ),

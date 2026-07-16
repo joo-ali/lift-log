@@ -38,21 +38,17 @@ class HomeRepository {
     // ترتيب التمارين من الأحدث للأقدم
     workouts.sort((a, b) => b.date.compareTo(a.date));
     
-    final lastActivity = workouts.isNotEmpty 
-        ? "${workouts.first.title} (${_formatDate(workouts.first.date)})" 
-        : 'No activity yet';
-    
     // محاولة توقع التمرين القادم بناءً على التاريخ والاقتراحات
     final nextWorkout = userActiveWorkout ?? await _predictNextWorkout(workouts);
     
     return {
       'userName': user?.name ?? 'Athlete',
-      'lastActivity': lastActivity,
       'nextWorkout': nextWorkout.title,
       'nextWorkoutExercises': nextWorkout.exercises.map((e) => e.name).join(', '),
       'streak': calculateStreak(workouts),
       'recentWorkouts': workouts.take(3).toList(),
       'currentWeight': user?.currentWeight ?? 0.0,
+      'targetWeight': user?.targetWeight ?? 0.0,
     };
   }
 
@@ -130,13 +126,5 @@ class HomeRepository {
     }
 
     return streak;
-  }
-
-  String _formatDate(DateTime date) {
-    final now = DateTime.now();
-    final diff = now.difference(date).inDays;
-    if (diff == 0) return "Today";
-    if (diff == 1) return "Yesterday";
-    return "${date.day}/${date.month}";
   }
 }

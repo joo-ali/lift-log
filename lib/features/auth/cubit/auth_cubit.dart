@@ -41,7 +41,7 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       if (e.toString().contains('network-request-failed')) {
         emit(AuthNetworkError("No internet connection. Accessing offline data..."));
-        final localUser = await _authRepository.getLocalUser();
+        final localUser = await _authRepository.getCurrentUser();
         if (localUser != null) {
           emit(AuthOfflineSuccess(localUser));
         }
@@ -51,34 +51,22 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> loginWithGoogle() async {
+  Future<void> register(
+    String email,
+    String password,
+    String name, {
+    double? currentWeight,
+    double? targetWeight,
+  }) async {
     emit(AuthLoading());
     try {
-      final userCredential = await _authRepository.loginWithGoogle();
-      if (userCredential != null && userCredential.user != null) {
-        // سحب التمارين فور تسجيل الدخول بـ Google
-        await _workoutRepository.syncWorkoutsFromCloud(userCredential.user!.uid);
-        emit(AuthSuccess(userCredential.user!));
-      } else {
-        emit(AuthError("Google login failed"));
-      }
-    } catch (e) {
-      if (e.toString().contains('network-request-failed')) {
-        emit(AuthNetworkError("No internet connection. Accessing offline data..."));
-        final localUser = await _authRepository.getLocalUser();
-        if (localUser != null) {
-          emit(AuthOfflineSuccess(localUser));
-        }
-      } else {
-        emit(AuthError(e.toString()));
-      }
-    }
-  }
-
-  Future<void> register(String email, String password, String name) async {
-    emit(AuthLoading());
-    try {
-      final userCredential = await _authRepository.register(email, password, name: name);
+      final userCredential = await _authRepository.register(
+        email,
+        password,
+        name: name,
+        currentWeight: currentWeight,
+        targetWeight: targetWeight,
+      );
       if (userCredential != null && userCredential.user != null) {
         emit(AuthSuccess(userCredential.user!));
       } else {

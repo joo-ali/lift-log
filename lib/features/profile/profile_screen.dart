@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lift_log/core/widgets/custom_dialog.dart';
+import 'package:lift_log/core/widgets/custom_text_field.dart';
 import 'package:lift_log/features/profile/cubit/profile_state.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_goal_card.dart';
 import 'package:lift_log/features/profile/presentation/widgets/profile_info_widget.dart';
@@ -11,6 +13,7 @@ import 'package:lift_log/features/profile/presentation/widgets/profile_top_bar.d
 import 'package:lift_log/core/constants/app_colors.dart';
 import 'package:lift_log/core/di/service_locator.dart';
 import 'package:lift_log/features/profile/cubit/profile_cubit.dart';
+import 'package:lift_log/l10n/app_localizations.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -99,74 +102,56 @@ class ProfileScreen extends StatelessWidget {
   }
 
   void _showEditProfileDialog(BuildContext context, String currentName) {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: currentName);
     final profileCubit = context.read<ProfileCubit>();
-    
+
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: Theme.of(context).cardTheme.color,
-        title: const Text('Edit Name'),
-        content: TextField(
+      builder: (dialogContext) => CustomDialog(
+        title: l10n.editName,
+        actionText: l10n.save,
+        onActionPressed: () {
+          profileCubit.updateProfile(name: controller.text.trim());
+          Navigator.pop(dialogContext);
+        },
+        content: CustomTextField(
+          label: l10n.username,
+          hint: l10n.enterName,
+          icon: Icons.person_outline,
           controller: controller,
-          autofocus: true,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-          decoration: const InputDecoration(
-            labelText: 'Username',
-            hintText: 'Enter your name',
-          ),
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              profileCubit.updateProfile(name: controller.text.trim());
-              Navigator.pop(dialogContext);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-            child: const Text('Save', style: TextStyle(color: Colors.white)),
-          ),
-        ],
       ),
     );
   }
 
   void _showUpdateWeightDialog(BuildContext context, double currentWeight, {required bool isTarget}) {
+    final l10n = AppLocalizations.of(context)!;
     final controller = TextEditingController(text: currentWeight.toString());
     final profileCubit = context.read<ProfileCubit>();
-    
+
     showDialog(
       context: context,
-      builder: (dialogContext) => AlertDialog(
-        backgroundColor: Theme.of(context).cardTheme.color,
-        title: Text(isTarget ? 'Update Goal Weight' : 'Update Current Weight'),
-        content: TextField(
+      builder: (dialogContext) => CustomDialog(
+        title: isTarget ? l10n.updateGoalWeight : l10n.updateCurrentWeight,
+        actionText: l10n.save,
+        onActionPressed: () {
+          final newWeight = double.tryParse(controller.text) ?? currentWeight;
+          if (isTarget) {
+            profileCubit.updateGoalWeight(newWeight);
+          } else {
+            profileCubit.updateCurrentWeight(newWeight);
+          }
+          Navigator.pop(dialogContext);
+        },
+        content: CustomTextField(
+          label: isTarget ? l10n.goalWeight : l10n.weightCurrent,
+          hint: '0.0',
+          icon: Icons.monitor_weight_outlined,
           controller: controller,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          autofocus: true,
-          style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-          decoration: InputDecoration(
-            suffixText: 'kg',
-            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary.withValues(alpha: 0.5))),
-            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: AppColors.primary)),
-          ),
+          suffixText: l10n.kg,
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(dialogContext), child: const Text('Cancel')),
-          ElevatedButton(
-            onPressed: () {
-              final newWeight = double.tryParse(controller.text) ?? currentWeight;
-              if (isTarget) {
-                profileCubit.updateGoalWeight(newWeight);
-              } else {
-                profileCubit.updateCurrentWeight(newWeight);
-              }
-              Navigator.pop(dialogContext);
-            },
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary),
-            child: const Text('Save', style: TextStyle(color: Colors.white)),
-          ),
-        ],
       ),
     );
   }

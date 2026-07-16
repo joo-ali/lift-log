@@ -47,38 +47,28 @@ class AuthRepository {
     return credential;
   }
 
-  Future<UserCredential?> loginWithGoogle() async {
-    final credential = await _firebaseAuthService.signInWithGoogle();
-    if (credential != null && credential.user != null) {
-      await _syncProfileFromCloud(credential.user!.uid);
-      
-      final existingUser = await _localDataSource.getUser();
-      if (existingUser == null || existingUser.id != credential.user!.uid) {
-        final newUser = UserModel(
-          id: credential.user!.uid,
-          email: credential.user!.email ?? "",
-          name: credential.user!.displayName ?? credential.user!.email?.split('@')[0] ?? "Athlete",
-        );
-        await _localDataSource.saveUser(newUser);
-      }
-    }
-    return credential;
-  }
-
-  Future<UserCredential?> register(String email, String password, {String? name}) async {
+  Future<UserCredential?> register(
+    String email,
+    String password, {
+    String? name,
+    double? currentWeight,
+    double? targetWeight,
+  }) async {
     final credential = await _firebaseAuthService.signUp(email, password);
     if (credential != null && credential.user != null) {
       final userModel = UserModel(
         id: credential.user!.uid,
         email: email,
         name: name ?? email.split('@')[0],
+        currentWeight: currentWeight ?? 0.0,
+        targetWeight: targetWeight ?? 0.0,
       );
       await updateUser(userModel);
     }
     return credential;
   }
 
-  Future<UserModel?> getLocalUser() async {
+  Future<UserModel?> getCurrentUser() async {
     return await _localDataSource.getUser();
   }
 
@@ -87,10 +77,6 @@ class AuthRepository {
     await _localDataSource.deleteUser();
     final workoutBox = Hive.box<WorkoutModel>(HiveService.workoutBox);
     await workoutBox.clear();
-  }
-
-  Future<UserModel?> getCurrentUser() async {
-    return await _localDataSource.getUser();
   }
 
   Future<void> updateUser(UserModel user) async {
