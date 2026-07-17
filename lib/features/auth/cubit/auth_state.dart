@@ -7,11 +7,9 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthSuccess extends AuthState {
-  final User? user; // جعلناه اختياري ليدعم حالات الأوفلاين التامة
+  final User? user;
   AuthSuccess(this.user);
 }
-
-
 
 class AuthOfflineSuccess extends AuthState {
   final UserModel user;
@@ -29,4 +27,3 @@ class AuthError extends AuthState {
 }
 
 class Unauthenticated extends AuthState {}
-

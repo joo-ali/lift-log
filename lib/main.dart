@@ -21,15 +21,12 @@ import 'package:lift_log/features/profile/cubit/profile_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 1. Initialize Firebase first
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // 2. Initialize Hive BEFORE Service Locator
   await HiveService.init();
 
-  // 3. Setup Service Locator
   await setupServiceLocator();
 
   runApp(
@@ -87,4 +84,3 @@ class LiftLogApp extends StatelessWidget {
     );
   }
 }
-

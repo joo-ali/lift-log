@@ -16,7 +16,6 @@ class ThemeCubit extends Cubit<ThemeMode> {
     if (savedTheme != null) {
       emit(savedTheme == 'light' ? ThemeMode.light : ThemeMode.dark);
     } else {
-      // إذا لم يوجد ثيم محفوظ (أول مرة فتح للتطبيق)، نجعل الافتراضي dark
       emit(ThemeMode.dark);
     }
   }
@@ -27,4 +26,3 @@ class ThemeCubit extends Cubit<ThemeMode> {
     emit(newMode);
   }
 }
-

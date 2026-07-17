@@ -12,16 +12,13 @@ class HiveService {
   static Future<void> init() async {
     await Hive.initFlutter();
 
-    // Register Adapters (Generated classes)
     Hive.registerAdapter(SetEntryModelAdapter());
     Hive.registerAdapter(ExerciseModelAdapter());
     Hive.registerAdapter(WorkoutModelAdapter());
     Hive.registerAdapter(UserModelAdapter());
 
-    // Open Boxes
     await Hive.openBox<WorkoutModel>(workoutBox);
     await Hive.openBox<UserModel>(userBox);
     await Hive.openBox(settingsBox);
   }
 }
-

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class AppTextStyles {
   static const String fontFamily = 'Montserrat';
 
-  // شيلنا الـ color: AppColors.onSurface عشان النصوص تظهر حسب الثيم (أبيض في الغامق وأسود في الفاتح)
   static const TextStyle displayLg = TextStyle(
     fontFamily: fontFamily,
     fontSize: 48,
@@ -49,4 +48,3 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
   );
 }
-

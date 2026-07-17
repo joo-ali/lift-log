@@ -16,7 +16,6 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user != null) {
-        // مزامنة التمارين في الخلفية عند فتح التطبيق
         _workoutRepository.syncWorkoutsFromCloud(user.uid);
         emit(AuthSuccess(user));
       } else {
@@ -32,7 +31,6 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final userCredential = await _authRepository.login(email, password);
       if (userCredential != null && userCredential.user != null) {
-        // سحب التمارين فور تسجيل الدخول الناجح
         await _workoutRepository.syncWorkoutsFromCloud(userCredential.user!.uid);
         emit(AuthSuccess(userCredential.user!));
       } else {
@@ -82,4 +80,3 @@ class AuthCubit extends Cubit<AuthState> {
     emit(Unauthenticated());
   }
 }
-

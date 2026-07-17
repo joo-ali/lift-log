@@ -6,7 +6,7 @@ class AppTheme {
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      fontFamily: 'Roboto', // Flutter handles fallback to system fonts for Arabic
+      fontFamily: 'Roboto',
       brightness: Brightness.dark,
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.backgroundDark,
@@ -72,4 +72,3 @@ class AppTheme {
     );
   }
 }
-

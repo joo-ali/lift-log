@@ -18,13 +18,11 @@ import 'package:lift_log/core/localization/locale_cubit.dart';
 final sl = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  // Services
   sl.registerLazySingleton<FirebaseAuthService>(() => FirebaseAuthService());
 
   sl.registerLazySingleton(() => UserLocalDataSource());
   sl.registerLazySingleton(() => WorkoutLocalDataSource());
 
-  // Repositories
   sl.registerLazySingleton(() => AuthRepository(
         sl<FirebaseAuthService>(),
         sl<UserLocalDataSource>(),
@@ -40,7 +38,6 @@ Future<void> setupServiceLocator() async {
         sl<UserLocalDataSource>(),
       ));
 
-  // Cubits
   sl.registerFactory(() => AuthCubit(sl<AuthRepository>(), sl<WorkoutRepository>()));
   sl.registerFactory(() => HomeCubit(sl<HomeRepository>(), sl<AuthCubit>()));
   sl.registerFactory(() => WorkoutCubit(
@@ -57,4 +54,3 @@ Future<void> setupServiceLocator() async {
   sl.registerLazySingleton(() => ThemeCubit());
   sl.registerLazySingleton(() => LocaleCubit());
 }
-

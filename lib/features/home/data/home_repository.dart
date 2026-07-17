@@ -18,7 +18,6 @@ class HomeRepository {
     final workouts = allWorkouts.where((w) => w.userId == userId).toList();
     var user = await _userLocalDataSource.getUser();
     
-    // لو لسه البيانات المحلية ما كملتش، بنحاول نجيب الاسم من الـ Firebase
     if (user == null) {
       final fbUser = FirebaseAuth.instance.currentUser;
       if (fbUser != null) {
@@ -31,14 +30,11 @@ class HomeRepository {
     }
 
     final activeWorkout = await _workoutLocalDataSource.getActiveWorkout();
-    
-    // Check if active workout belongs to current user
+
     final userActiveWorkout = (activeWorkout != null && activeWorkout.userId == userId) ? activeWorkout : null;
-    
-    // ترتيب التمارين من الأحدث للأقدم
+
     workouts.sort((a, b) => b.date.compareTo(a.date));
-    
-    // محاولة توقع التمرين القادم بناءً على التاريخ والاقتراحات
+
     final nextWorkout = userActiveWorkout ?? await _predictNextWorkout(workouts);
     
     return {
@@ -53,10 +49,9 @@ class HomeRepository {
   }
 
   Future<WorkoutModel> _predictNextWorkout(List<WorkoutModel> history) async {
-    // بنجيب الـ Splits من الـ API الأول
+
     final suggestions = await _routineRepository.getSuggestedRoutines();
-    
-    // لو الـ API رجع داتا، بنستخدمها
+
     if (suggestions.isNotEmpty) {
       if (history.isEmpty) return suggestions.first;
       
@@ -99,19 +94,18 @@ class HomeRepository {
   int calculateStreak(List<WorkoutModel> workouts) {
     if (workouts.isEmpty) return 0;
 
-    // استخراج التواريخ الفريدة فقط بدون الوقت
     final workoutDates = workouts
         .map((w) => DateTime(w.date.year, w.date.month, w.date.day))
         .toSet()
         .toList();
     
-    workoutDates.sort((a, b) => b.compareTo(a)); // من الأحدث للأقدم
+    workoutDates.sort((a, b) => b.compareTo(a));
 
     int streak = 0;
     DateTime today = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
     DateTime checkDate = today;
 
-    // لو مفيش تمرين النهاردة، بنبدأ نشيك من إمبارح
+
     if (!workoutDates.contains(today)) {
       checkDate = today.subtract(const Duration(days: 1));
     }
@@ -121,7 +115,7 @@ class HomeRepository {
         streak++;
         checkDate = checkDate.subtract(const Duration(days: 1));
       } else if (date.isBefore(checkDate)) {
-        break; // الـ Streak انقطع
+        break;
       }
     }
 
