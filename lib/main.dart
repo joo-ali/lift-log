@@ -30,10 +30,12 @@ void main() async {
   await setupServiceLocator();
 
   runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => const LiftLogApp(),
-    ),
+  kReleaseMode
+      ? const LiftLogApp()
+      : DevicePreview(
+          enabled: true,
+          builder: (context) => const LiftLogApp(),
+        ),
   );
 }
 
@@ -58,7 +60,7 @@ class LiftLogApp extends StatelessWidget {
             builder: (context, locale) {
               return MaterialApp(
                 locale: locale,
-                builder: DevicePreview.appBuilder,
+                builder: kReleaseMode ? null : DevicePreview.appBuilder,
                 title: 'Lift Log',
                 debugShowCheckedModeBanner: false,
                 theme: AppTheme.lightTheme,
