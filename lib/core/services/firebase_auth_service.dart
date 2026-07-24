@@ -5,20 +5,17 @@ class FirebaseAuthService {
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-
-  Future<UserCredential?> signUp(String email, String password) async {
+  Future<UserCredential?> signIn(String email, String password) async {
     try {
-      
-      return await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      return await _auth.signInWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       return null;
     }
   }
 
-
-  Future<UserCredential?> signIn(String email, String password) async {
+  Future<UserCredential?> signUp(String email, String password) async {
     try {
-      return await _auth.signInWithEmailAndPassword(email: email, password: password);
+      return await _auth.createUserWithEmailAndPassword(email: email, password: password);
     } catch (e) {
       return null;
     }

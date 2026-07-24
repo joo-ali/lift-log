@@ -25,7 +25,6 @@ class AuthRepository {
         await _localDataSource.saveUser(cloudUser);
       }
     } catch (e) {
-      // فشل المزامنة السحابية، سنعتمد على البيانات المحلية
     }
   }
 

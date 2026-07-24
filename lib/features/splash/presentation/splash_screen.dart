@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
     final authState = context.read<AuthCubit>().state;
     
+    // لو اليوزر مسجل دخول، بنوديه الهوم، غير كده يروح للـ Login علطول
     if (authState is AuthSuccess || authState is AuthOfflineSuccess) {
       Navigator.pushReplacementNamed(context, AppRouter.home);
     } else {

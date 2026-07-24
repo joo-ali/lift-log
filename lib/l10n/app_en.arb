@@ -1,0 +1,101 @@
+{
+  "appName": "LiftLog",
+  "welcomeBack": "Welcome back,",
+  "loginWelcomeBack": "Welcome Back!",
+  "loginSubtitle": "Login to your account to continue",
+  "email": "Email",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "login": "Login",
+  "dontHaveAccount": "Don't have an account?",
+  "newToGrind": "New to LiftLog?",
+  "createAccount": "Create Account",
+  "registerTitle": "Create Account",
+  "registerSubtitle": "Start your journey today",
+  "fullName": "Full Name",
+  "signUp": "Sign Up",
+  "alreadyHaveAccount": "Already have an account?",
+  "todaySession": "TODAY'S SESSION",
+  "continueWorkout": "Continue Workout",
+  "weeklyStreak": "WEEKLY\nSTREAK",
+  "currentWeight": "CURRENT\nWEIGHT",
+  "recentActivity": "Recent Activity",
+  "daysCount": "{count} / 7 days",
+  "@daysCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kg": "kg",
+  "done": "Done",
+  "profile": "Profile",
+  "progress": "Progress",
+  "yourProgress": "Your Progress",
+  "trackGains": "Track your gains",
+  "totalWorkouts": "Total Workouts",
+  "totalVolume": "Total Volume",
+  "days": "Days",
+  "volumeProgression": "Volume Progression",
+  "addWorkoutsToSeeProgress": "Add workouts to see progress",
+  "weightTracking": "Weight Tracking",
+  "current": "Current",
+  "target": "Target",
+  "toGoal": "{weight} {unit} to goal",
+  "@toGoal": {
+    "placeholders": {
+      "weight": {
+        "type": "String"
+      },
+      "unit": {
+        "type": "String"
+      }
+    }
+  },
+  "workout": "Workouts",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "logout": "Log Out",
+  "personalRecords": "Personal Records",
+  "weightHistory": "Weight History",
+  "goalWeight": "Goal Weight",
+  "darkMode": "Dark Mode",
+  "aboutApp": "About App",
+  "streak": "STREAK",
+  "workoutsCount": "WORKOUTS",
+  "workoutHistory": "Workout History",
+  "noWorkoutsYet": "No workouts yet",
+  "startJourney": "Start your fitness journey by adding a workout!",
+  "activeSession": "ACTIVE SESSION",
+  "startedAt": "Started {time}",
+  "@startedAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "addExercise": "Add Exercise",
+  "finishWorkout": "FINISH WORKOUT",
+  "set": "SET",
+  "weight": "WEIGHT",
+  "reps": "REPS",
+  "addSet": "Add Set",
+  "editName": "Edit Name",
+  "save": "Save",
+  "username": "Username",
+  "enterName": "Enter your name",
+  "updateGoalWeight": "Update Goal Weight",
+  "updateCurrentWeight": "Update Current Weight",
+  "weightCurrent": "Current Weight",
+  "morningWorkout": "Morning Workout",
+  "newExercise": "New Exercise",
+  "keepGoing": "Keep going! You're doing great.",
+  "flexible": "Flexible",
+  "startNewRoutine": "Start new routine",
+  "morningSession": "Morning Session",
+  "afternoonSession": "Afternoon Session",
+  "eveningSession": "Evening Session"
+}
