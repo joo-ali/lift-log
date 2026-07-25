@@ -117,8 +117,8 @@
     * https://docs.flutter.dev/platform-integration/web/initialization
   -->
 <script>
-  window.addEventListener('flutter-first-frame', function () {
-    removeSplashFromWeb();
+  window.addEventListener('load', function () {
+    setTimeout(removeSplashFromWeb, 3000);
   });
 </script>
 
