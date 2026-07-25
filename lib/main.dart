@@ -18,25 +18,52 @@ import 'package:lift_log/features/workout/cubit/workout_cubit.dart';
 import 'package:lift_log/features/progress/cubit/progress_cubit.dart';
 import 'package:lift_log/features/profile/cubit/profile_cubit.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
-  await HiveService.init();
+  try {
+    debugPrint('1- Starting Firebase');
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint('2- Firebase finished');
 
-  await setupServiceLocator();
+    debugPrint('3- Starting Hive');
+    await HiveService.init();
+    debugPrint('4- Hive finished');
 
-  runApp(
-  kReleaseMode
-      ? const LiftLogApp()
-      : DevicePreview(
-          enabled: true,
-          builder: (context) => const LiftLogApp(),
+    debugPrint('5- Starting service locator');
+    await setupServiceLocator();
+    debugPrint('6- Service locator finished');
+
+    runApp(
+      kReleaseMode
+          ? const LiftLogApp()
+          : DevicePreview(
+              enabled: true,
+              builder: (context) => const LiftLogApp(),
+            ),
+    );
+  } catch (error, stackTrace) {
+    debugPrint('STARTUP ERROR: $error');
+    debugPrintStack(stackTrace: stackTrace);
+
+    runApp(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: SelectableText(
+                'Startup error:\n$error',
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ),
-  );
+      ),
+    );
+  }
 }
 
 class LiftLogApp extends StatelessWidget {
