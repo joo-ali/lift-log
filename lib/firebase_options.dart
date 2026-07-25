@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -53,7 +50,6 @@ class DefaultFirebaseOptions {
     projectId: 'lift-log-2bf4d',
     storageBucket: 'lift-log-2bf4d.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyC34lSA6pMWF625x-SNb4uHU7x26Uu4t0s',
     appId: '1:136917112051:ios:eb29c6110c9c792611d386',
@@ -63,7 +59,6 @@ class DefaultFirebaseOptions {
     iosClientId: '136917112051-2e17866g034954si77qe1sl3rpqrae93.apps.googleusercontent.com',
     iosBundleId: 'com.example.liftLog',
   );
-
   static const FirebaseOptions windows = FirebaseOptions(
     apiKey: 'AIzaSyDr-qBuzYQbnOBquozvub3Op72YprRrpBE',
     appId: '1:136917112051:web:b5ccbe273c3bc7fd11d386',
@@ -73,5 +68,14 @@ class DefaultFirebaseOptions {
     storageBucket: 'lift-log-2bf4d.firebasestorage.app',
     measurementId: 'G-J410VNB2PF',
   );
-}
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyDr-qBuzYQbnOBquozvub3Op72YprRrpBE',
+    appId: '1:136917112051:web:b5ccbe273c3bc7fd11d386',
+    messagingSenderId: '136917112051',
+    projectId: 'lift-log-2bf4d',
+    authDomain: 'lift-log-2bf4d.firebaseapp.com',
+    storageBucket: 'lift-log-2bf4d.firebasestorage.app',
+    measurementId: 'G-J410VNB2PF',
+  );
+}

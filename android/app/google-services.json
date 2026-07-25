@@ -29,6 +29,13 @@
             {
               "client_id": "136917112051-jb6iqfcla617ucph83c9e5tvv040vktc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "136917112051-2e17866g034954si77qe1sl3rpqrae93.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.liftLog"
+              }
             }
           ]
         }
